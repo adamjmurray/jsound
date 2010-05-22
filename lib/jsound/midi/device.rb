@@ -6,10 +6,26 @@ module JSound
   module Midi
     
     class Device      
+      include_package 'javax.sound.midi'      
       include Util
+      
+      attr_reader :type
       
       def initialize(device)
         @device = device
+        case device
+        when Sequencer then @type = :sequencer
+        when Synthesizer then @type = :synth
+        else
+          # This assumes a single device cannot be both an input and an output:
+          if device.maxTransmitters != 0
+            @type = :input
+          elsif device.maxReceivers != 0
+            @type = :output
+          else
+            @type = :unknown
+          end
+        end
       end
 
       def info
@@ -39,6 +55,7 @@ module JSound
 
       def to_s(indent='')
         fields = []
+        fields << "#{indent}  type: '#{type}'"
         fields << "#{indent}  description: '#{escape info.description}'" if info.description !~ unknown?
         fields << "#{indent}  name: '#{escape info.name}'" if info.name !~ unknown?
         fields << "#{indent}  vendor: '#{escape info.vendor}'" if info.vendor !~ unknown?

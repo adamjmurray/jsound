@@ -9,7 +9,6 @@ module JSound
     DEVICES = DeviceCollection.new
   
     # Devices by type:
-    
     INPUTS = DeviceCollection.new
 
     OUTPUTS = DeviceCollection.new
@@ -18,20 +17,29 @@ module JSound
 
     SEQUENCERS = DeviceCollection.new
 
-    ##############################################
-    
-    MidiSystem.getMidiDeviceInfo.each do |device_info| 
-      device = MidiSystem.getMidiDevice(device_info)
-      wrapped_device = Device.new(device)
-      case device
-      when Sequencer then SEQUENCERS << wrapped_device
-      when Synthesizer then SYNTHS << wrapped_device
-      else
-        if device.getMaxTransmitters != 0 then INPUTS << wrapped_device end
-        if device.getMaxReceivers != 0 then OUTPUTS << wrapped_device end
-      end 
-      DEVICES << wrapped_device    
+    # Rebuild the list of connected devices.
+    # This happens automatically when the class is loaded.
+    # You can explicitly call it again if you attach a new device during program execution.
+    def self.load_devices
+      [DEVICES,INPUTS,OUTPUTS,SYNTHS,SEQUENCERS].each{|collection| collection.clear}
+      MidiSystem.getMidiDeviceInfo.each do |device_info| 
+        java_device = MidiSystem.getMidiDevice(device_info)
+        device = Device.new(java_device)
+        case device.type
+        when :sequencer then SEQUENCERS << device
+        when :synth     then SYNTHS     << device
+        when :input     then INPUTS     << device
+        when :output    then OUTPUTS    << device
+        end 
+        DEVICES << device    
+      end
     end
-
+    load_devices()  
+    
+    # Access the load_devices method directly when including this module
+    def load_devices
+      Midi.load_devices
+    end
+    
   end
 end
