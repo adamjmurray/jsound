@@ -20,64 +20,95 @@ module JavaMidi
       end
     end 
     
-    def >(output)
-      if output.is_a? MidiDevice
-        output = output.getReceiver
+    def >>(receiver)
+      if receiver.is_a? MidiDevice
+        receiver.open if not receiver.open?     
+        receiver = receiver.receiver
       end
-      @device.getTransmitter.setReceiver(output)  
+      @device.open if not @device.open?    
+      @device.transmitter.receiver = receiver
     end   
     
     def [](field)
-      self.send field
+      send field
     end
 
     def to_s
-      json = "{\n"
-      json += "  description: '#{escape info.description}'\n" if info.description !~ unknown?
-      json += "  name: '#{escape info.name}'\n" if info.name !~ unknown?
-      json += "  vendor: '#{escape info.vendor}'\n" if info.vendor !~ unknown?
-      json += "  version: '#{escape info.version}'\n" if info.version !~ unknown?
-      json += "}"
+      fields = []
+      fields << "  description: '#{escape info.description}'" if info.description !~ unknown?
+      fields << "  name: '#{escape info.name}'" if info.name !~ unknown?
+      fields << "  vendor: '#{escape info.vendor}'" if info.vendor !~ unknown?
+      fields << "  version: '#{escape info.version}'" if info.version !~ unknown?      
+      "{\n" + fields.join(",\n") + "\n}"
     end    
   end
   
   
-  class MidiDeviceCollection < Array   
+  class MidiDeviceCollection
+    
+    def initialize
+      @coll = []
+    end  
 
-    def list(field=:to_s)
-      collect{|device| device[field]}.delete_if{|value| value =~ unknown? }
+    def list(field=:description)
+      @coll.collect{|device| device[field]}.delete_if{|value| value =~ JavaMidi::unknown? }
     end
 
-    def find_device(with_descriptor, field=:description)
-      search :find, field, with_descriptor
+    def find(criteria)
+      search :find, criteria
     end
     
-    def find_all_devices(with_descriptor, field=:description)
-      search :find_all, field, with_descriptor
+    def find_all(criteria)
+      search :find_all, criteria
     end
     
-    def open(with_descriptor, field=:description)
-      device = find_device(with_descriptor, field)
-      device.open
-      return device
+    def [](criteria)
+      if criteria.kind_of? Fixnum or criteria.kind_of? Range
+        @coll[criteria]
+      else
+        find_all(criteria)
+      end
+    end
+    
+    def /(regexp)
+      regexp = Regexp.new(regexp.to_s) if not regexp.kind_of? Regexp
+      find(regexp)
+    end
+    
+    def to_s
+      @coll.join("\n")
     end
     
     private
-    def search(iterator, field, descriptor)
-      matcher = matcher_for(descriptor)
-      send(iterator) do |device|
-        device[field].send(matcher, descriptor)
+    
+    def search(iterator, criteria)
+      field, target_value = field_and_target_value_for(criteria)
+      matcher = matcher_for(target_value)
+      @coll.send(iterator) do |device|        
+        device[field].send(matcher, target_value)
+      end
+    end
+    
+    def field_and_target_value_for(criteria)
+      if criteria.respond_to? :[] and criteria.respond_to? :keys
+        first_key = criteria.keys.first
+        return first_key, criteria[first_key]
+      else
+        return :description, criteria
       end
     end
       
-    def matcher_for descriptor
-      case descriptor
+    def matcher_for(target_value)
+      case target_value
       when Regexp then '=~'
       else '=='
       end
-   end      
+    end
+    
+    def method_missing(sym, *args, &block)
+      @coll.send(sym, *args, &block)
+    end      
   end
-  
   
   private
   devices = MidiSystem.getMidiDeviceInfo.map do |device_info| 
@@ -103,7 +134,6 @@ module JavaMidi
     MIDI_DEVICES << wrapped_device    
   end
   
-  private
   def unknown?
     # I'm not sure if this pattern should change based on locale.
     # It seems stupid that java midi device info would always returns an "Unknown _____" string 

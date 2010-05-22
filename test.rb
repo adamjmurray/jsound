@@ -13,22 +13,28 @@ class MidiPrinter
   end
 end
 
-puts 'MIDI DEVICE VENDORS: ', MIDI_DEVICES.list(:vendor).uniq
-puts
-puts 'SYNTHS:',     MIDI_SYNTHS
-puts
-puts 'SEQUENCERS:', MIDI_SEQUENCERS
-puts
-puts 'INPUTS:',     MIDI_INPUTS
-puts
-puts 'OUTPUTS:',    MIDI_OUTPUTS
+# puts 'MIDI DEVICE VENDORS: ', MIDI_DEVICES.list(:vendor).uniq
+# puts
+# puts 'SYNTHS:',     MIDI_SYNTHS
+# puts
+# puts 'SEQUENCERS:', MIDI_SEQUENCERS
+# puts
+# puts 'INPUTS:',     MIDI_INPUTS
+# puts
+# puts 'OUTPUTS:',    MIDI_OUTPUTS
 
 
-input  = MIDI_INPUTS.open /Akai/ # /Keystation/
-output = MIDI_OUTPUTS.open /SimpleSynth/
+input  = MIDI_INPUTS / :Akai
 
-input > output
-input > MidiPrinter.new
+output = MIDI_OUTPUTS / :SimpleSynth
+
+
+if input
+  input >> MidiPrinter.new
+
+  input >> output if output
+end
+
 
 java.lang.Thread.new {
   while(true)
