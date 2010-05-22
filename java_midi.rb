@@ -33,29 +33,20 @@ module JavaMidi
 
     def to_s
       json = "{\n"
-      json += "  description: '#{escape info.description}'\n" if info.description !~ unknown
-      json += "  name: '#{escape info.name}'\n" if info.name !~ unknown
-      json += "  vendor: '#{escape info.vendor}'\n" if info.vendor !~ unknown
-      json += "  version: '#{escape info.version}'\n" if info.version !~ unknown
+      json += "  description: '#{escape info.description}'\n" if info.description !~ unknown?
+      json += "  name: '#{escape info.name}'\n" if info.name !~ unknown?
+      json += "  vendor: '#{escape info.vendor}'\n" if info.vendor !~ unknown?
+      json += "  version: '#{escape info.version}'\n" if info.version !~ unknown?
       json += "}"
-    end
-    
-    private
-    def unknown
-      # I'm not sure if this pattern should change based on locale.
-      # It seems stupid that java midi device info would always returns an "Unknown _____" string 
-      # when it doesn't have a value for the field, so I guess this probably won't work in a non-English locale...
-      # Why doesn't it just return nil? 
-      /^Unknown/
-    end
-    
-    def escape(s)
-      s.gsub("'","\\\\'")
-    end
+    end    
   end
   
   
   class MidiDeviceCollection < Array   
+
+    def list(field=:to_s)
+      collect{|device| device[field]}.delete_if{|value| value =~ unknown? }
+    end
 
     def find_device(with_descriptor, field=:description)
       search :find, field, with_descriptor
@@ -110,6 +101,19 @@ module JavaMidi
       if device.getMaxReceivers != 0 then MIDI_OUTPUTS << wrapped_device end
     end 
     MIDI_DEVICES << wrapped_device    
+  end
+  
+  private
+  def unknown?
+    # I'm not sure if this pattern should change based on locale.
+    # It seems stupid that java midi device info would always returns an "Unknown _____" string 
+    # when it doesn't have a value for the field, so I guess this probably won't work in a non-English locale...
+    # Why doesn't it just return nil? 
+    /^Unknown/
+  end
+  
+  def escape(s)
+    s.gsub("'","\\\\'")
   end
   
 end

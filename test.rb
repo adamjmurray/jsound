@@ -13,13 +13,16 @@ class MidiPrinter
   end
 end
 
-# puts 'SYNTHS:',     JavaMidi::SYNTHS
-# puts
-# puts 'SEQUENCERS:', JavaMidi::SEQUENCERS
-# puts
-# puts 'INPUTS:',     JavaMidi::INPUTS
-# puts
-# puts 'OUTPUTS:',    JavaMidi::OUTPUTS
+puts 'MIDI DEVICE VENDORS: ', MIDI_DEVICES.list(:vendor).uniq
+puts
+puts 'SYNTHS:',     MIDI_SYNTHS
+puts
+puts 'SEQUENCERS:', MIDI_SEQUENCERS
+puts
+puts 'INPUTS:',     MIDI_INPUTS
+puts
+puts 'OUTPUTS:',    MIDI_OUTPUTS
+
 
 input  = MIDI_INPUTS.open /Akai/ # /Keystation/
 output = MIDI_OUTPUTS.open /SimpleSynth/
