@@ -9,7 +9,18 @@ module JSound
       include_package 'javax.sound.midi'      
       include Util
       
-      attr_reader :type
+      attr_reader :type      
+      
+      def self.open_devices
+        @@open_devices ||= []
+      end
+      at_exit do
+        # Close all open devices so we don't hang the program at shutdown time
+        for device in Device.open_devices
+          puts "Closing #{device.short_s}"
+          device.close
+        end
+      end         
       
       def initialize(device)
         @device = device
@@ -31,6 +42,14 @@ module JSound
       def info
         @device.deviceInfo
       end
+      
+      def open
+        if not @device.open?
+          puts "Opening #{short_s}"
+          @device.open
+          Device.open_devices << self
+        end
+      end          
 
       def method_missing(sym, *args, &block)
         if @device.respond_to? sym
@@ -42,10 +61,10 @@ module JSound
 
       def >>(receiver)
         if receiver.kind_of? Device
-          receiver.open if not receiver.open?     
+          receiver.open     
           receiver = receiver.receiver
         end
-        @device.open if not @device.open?    
+        self.open
         @device.transmitter.receiver = receiver
       end   
 
@@ -61,7 +80,13 @@ module JSound
         fields << "#{indent}  vendor: '#{escape info.vendor}'" if info.vendor !~ unknown?
         fields << "#{indent}  version: '#{escape info.version}'" if info.version !~ unknown?      
         "#{indent}{\n" + fields.join(",\n") + "\n#{indent}}"
-      end    
+      end 
+      
+      # A more compact String representation that should uniquely identify the device to a human.
+      def short_s
+        "MIDI #{type} device: #{info.description}"
+      end
+      
     end
     
   end
