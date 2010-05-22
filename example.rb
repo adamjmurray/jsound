@@ -25,5 +25,4 @@ puts
 # or use more flexible locators such as:
 #INPUTS.find(:vendor => 'M-Audio') >> OUTPUTS.find(/IAC Driver/)
 
-# require 'jsound/midi/printer'
-# INPUTS/:Akai >> Printer.new
+# INPUTS/:Akai >> Monitor.new

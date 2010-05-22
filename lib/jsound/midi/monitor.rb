@@ -2,7 +2,7 @@ module JSound
   
   module Midi
     
-    class Printer
+    class Monitor
       include_package 'javax.sound.midi'
       include javax.sound.midi.Receiver
         
