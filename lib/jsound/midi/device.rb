@@ -38,6 +38,8 @@ module JSound
             @type = :unknown
           end
         end
+                
+        @receiver = @device.receiver if type == :output
       end
 
       def info
@@ -68,15 +70,26 @@ module JSound
         end
       end 
 
-      def >>(receiver)
-        if receiver.kind_of? Device
-          receiver.open     
-          receiver = receiver.receiver
+      def >>(input)
+        if input.kind_of? Device
+          input.open     
+          receiver = input.receiver
+        else
+          receiver = input
         end
         self.open
-        @device.transmitter.receiver = receiver
+        @device.transmitter.receiver = receiver        
       end   
-
+      
+      def <<(message)        
+        # unwrap the ruby message wrapper, if needed:
+        message = message.java_message if message.respond_to? :java_message
+        
+        # Use java_send to call Receiver.send() since it conflicts with Ruby's built-in send method
+        # -1 means no timestamp, so we're not supporting timestamps        
+        @receiver.java_send(:send, [MidiMessage, Java::long], message, -1) if @receiver        
+      end
+      
       def [](field)
         send field
       end

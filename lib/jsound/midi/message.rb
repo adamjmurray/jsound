@@ -5,6 +5,18 @@ module JSound
       include_package 'javax.sound.midi'
 
       attr_reader :java_message, :channel, :type, :value
+      
+      def self.note_on(pitch, velocity=127, channel=1)
+        m = ShortMessage.new
+        m.setMessage(ShortMessage::NOTE_ON, channel, pitch, velocity)
+        return self.new(m)
+      end
+      
+      def self.note_off(pitch, velocity=0, channel=1)
+        m = ShortMessage.new
+        m.setMessage(ShortMessage::NOTE_OFF, channel, pitch, velocity)
+        return self.new(m)
+      end
 
       def initialize(message)
         @java_message = message

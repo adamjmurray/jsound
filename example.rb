@@ -18,11 +18,72 @@ puts "OUTPUT DESCRIPTIONS:"
 puts OUTPUTS.list
 puts
 
-# Based on the input and output descriptions, 
-# you can locate the first device matching a description
-# and connect the I/O as follows:
-#INPUTS/:Akai >> OUTPUTS/:SimpleSynth
-# or use more flexible locators such as:
-#INPUTS.find(:vendor => 'M-Audio') >> OUTPUTS.find(/IAC Driver/)
 
-# INPUTS/:Akai >> Monitor.new
+# The following examples use SimpleSynth as an output.
+# It's a free program for OS X available http://notahat.com/simplesynth
+# I assume SimpleSynth's MIDI Source is set to "SimpleSynth virtual input"
+
+# On Windows or Linux, I *think* you can just use a built-in MIDI output for your soundcard
+# If you need to do anything special on Windows/Linux, let me know @ http://github.com/adamjmurray 
+# and I'll update this example.
+
+
+#######################################################
+## FINDING INPUTS AND OUTPUTS
+##
+## Based on the input and output descriptions, 
+## you can locate the first device matching a description:
+#> OUTPUTS/'SimpleSynth'
+#
+## or just:
+#> OUTPUTS/:SimpleSynth
+#
+## the / operator is a shortcut for
+#> OUTPUTS.find /SimpleSynth/
+#
+## which has some more advanced options:
+#> OUTPUTS.find :vendor => 'M-Audio'
+#
+## Use Strings for exact matches and Regexp for partial matches
+## The find method returns the first match, find_all will return all of them: 
+#> OUTPUTS.find_all :name => /(Novation|M-Audio)/
+#
+## All of these lookup options work for the INPUTS collection too:
+#> INPUTS/'M-Audio'
+
+
+######################################################
+## ROUTING INPUTS TO OUTPUTS
+##
+## Once you have an input and an output, just connect them like so:
+#> input = INPUTS/:Akai
+#> output = OUTPUTS/:SimpleSynth
+#> input >> output
+#
+## If you are sure the inputs and outputs exist, you can do it altogether:
+#> INPUTS/:Akai >> OUTPUTS/:SimpleSynth
+
+
+######################################################
+## MONITORING INPUT
+##
+## Just route to an instance of JSound::Midi::Monitor:
+#> input >> Monitor.new
+
+
+######################################################
+## GENERATING NOTES
+##
+## I plan to make this Message API an includeable module:
+#
+# output.open  
+# while(true)
+#   output << Message.note_on(60,70)
+#   sleep 1
+#   output << Message.note_off(60)
+#   sleep 1
+# end
+#
+## Note that connecting to an output with >> will open the output automatically,
+## but passing in Messages with << does not.
+## That's why I explicitly call output.open in the above example.
