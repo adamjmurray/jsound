@@ -17,16 +17,17 @@ module JSound
       at_exit do
         # Close all open devices so we don't hang the program at shutdown time
         for device in Device.open_devices
-          puts "Closing #{device.short_s}"
           device.close
         end
       end         
       
       def initialize(device)
-        @device = device
+        @device = device        
+        
+        # set the type:
         case device
         when Sequencer then @type = :sequencer
-        when Synthesizer then @type = :synth
+        when Synthesizer then @type = :synthesizer
         else
           # This assumes a single device cannot be both an input and an output:
           if device.maxTransmitters != 0
@@ -44,12 +45,20 @@ module JSound
       end
       
       def open
-        if not @device.open?
+        unless @device.open?
           puts "Opening #{short_s}"
           @device.open
           Device.open_devices << self
         end
-      end          
+      end   
+      
+      def close
+        if @device.open?
+          puts "Closing #{device.short_s}"          
+          @device.close
+          Device.open_devices.delete(self)
+        end
+      end       
 
       def method_missing(sym, *args, &block)
         if @device.respond_to? sym
