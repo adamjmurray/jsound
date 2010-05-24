@@ -1,3 +1,5 @@
+# A MIDI message
+
 module JSound
   module Midi
 
