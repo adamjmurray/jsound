@@ -56,7 +56,7 @@ module JSound
       
       def close
         if @device.open?
-          puts "Closing #{device.short_s}"          
+          puts "Closing #{short_s}"          
           @device.close
           Device.open_devices.delete(self)
         end
