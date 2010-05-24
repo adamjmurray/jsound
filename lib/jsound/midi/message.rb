@@ -34,7 +34,7 @@ module JSound
           @value = message.data # this is a byte array in Java, might need conversion?
           
         when ShortMessage
-          @type = case message.command
+          @type = case message.status
           when ShortMessage::ACTIVE_SENSING         then :active_sensing
           when ShortMessage::CHANNEL_PRESSURE       then :channel_pressure
           when ShortMessage::CONTINUE               then :continue
