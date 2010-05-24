@@ -74,13 +74,16 @@ puts
 ######################################################
 ## GENERATING NOTES
 ##
-## I plan to make this Message API an includeable module:
+## See message_builder.rb for list of messages currently supported,
+## including pitch_bend, control_change, channel_pressure, and more
 #
+# include JSound::Midi::MessageBuilder
+# output = OUTPUTS/:SimpleSynth
 # output.open  
 # while(true)
-#   output << Message.note_on(60,70)
+#   output << note_on(60,70)
 #   sleep 1
-#   output << Message.note_off(60)
+#   output << note_off(60)
 #   sleep 1
 # end
 #

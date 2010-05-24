@@ -20,6 +20,8 @@ Take a look at the comments in example.rb for some things to try, like:
 
 * monitor a MIDI input by routing it to a JSound::Midi::Monitor
 
+* generate MIDI events and send them to an output
+
 
 Project Info
 ------------
