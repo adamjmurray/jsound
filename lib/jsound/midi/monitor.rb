@@ -9,6 +9,8 @@ module JSound
       def send(java_message, timestamp)
         message = Message.from_java(java_message) 
         puts message.to_s
+      rescue
+        STDERR.puts $!
       end
 
     end

@@ -53,13 +53,18 @@ module JSound
           data = java_message.data # this is a byte array in Java, might need conversion?
           
         when ShortMessage
-          message_class = CLASS_BY_STATUS[java_message.status]
+          # For command-type messages, the least significant 4 bits of the status byte will be the channel number.
+          # java_message.command will return the desired command's status code in this case, or
+          # we can just use a bitmask to grab the most significant 4 bits of the status byte like so:
+          status = (java_message.status & 0x80)
+          
+          message_class = CLASS_BY_STATUS[status]          
           if message_class
             return message_class.from_java(java_message)
           end
           
           # Old fallback code. Commented out cases have been implemented as classes in the Messages module
-          type = case java_message.status
+          type = case status
           when ShortMessage::ACTIVE_SENSING         then :active_sensing
           # when ShortMessage::CHANNEL_PRESSURE       then :channel_pressure
           when ShortMessage::CONTINUE               then :continue
@@ -69,8 +74,8 @@ module JSound
           # when ShortMessage::NOTE_OFF               then :note_off
           # when ShortMessage::NOTE_ON                then :note_on
           # when ShortMessage::PITCH_BEND             then :pitch_bend
-          when ShortMessage::POLY_PRESSURE          then :poly_pressure
-          when ShortMessage::PROGRAM_CHANGE         then :program_change
+          # when ShortMessage::POLY_PRESSURE          then :poly_pressure
+          # when ShortMessage::PROGRAM_CHANGE         then :program_change
           when ShortMessage::SONG_POSITION_POINTER  then :song_position_pointer
           when ShortMessage::SONG_SELECT            then :song_select
           when ShortMessage::START                  then :start
