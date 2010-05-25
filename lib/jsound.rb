@@ -2,6 +2,7 @@ require 'java'
 
 require 'jsound/util'
 
+require 'jsound/midi/data_conversion'
 require 'jsound/midi/device'
 require 'jsound/midi/device_collection'
 require 'jsound/midi/message'

@@ -4,6 +4,7 @@ module JSound
   module Midi
     module MessageBuilder
       include_package 'javax.sound.midi'
+      include DataConversion
       
       def note_on(pitch, velocity=127, channel=0)
         midi_command(ShortMessage::NOTE_ON, channel, pitch, velocity)
@@ -17,13 +18,13 @@ module JSound
       # The value can be an int in the range 0-16383 (8192 is no bend)
       # or it can be a float, which is assumed to be in the range -1.0 to 1.0
       def pitch_bend(value, channel=0)
-        value = (16383*(value+1)/2).round if value.is_a? Float   
-        lsb, msb = convert_to_7_bit value     
+        value = normalized_float_to_14bit(value) if value.is_a? Float        
+        lsb, msb = to_7bit(value)
         midi_command(ShortMessage::PITCH_BEND, channel, lsb, msb)
       end
       
-      def control_change(control_number, value, channel=0)
-        midi_command(ShortMessage::CONTROL_CHANGE, channel, control_number, value)
+      def control_change(control, value, channel=0)
+        midi_command(ShortMessage::CONTROL_CHANGE, channel, control, value)
       end
 
       def channel_pressure(pressure, channel=0)
@@ -47,10 +48,7 @@ module JSound
         java_message.setMessage(type, channel, data1, data2)
         return Message.from_java(java_message)
       end
-      
-      def convert_to_7_bit(value)
-        [value & 127, value >> 7]
-      end
+
     end
   end
 end
