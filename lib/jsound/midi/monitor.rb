@@ -7,8 +7,8 @@ module JSound
       include javax.sound.midi.Receiver
         
       def send(java_message, timestamp)
-        message = Message.new(java_message) 
-        puts "channel #{message.channel} received #{message.type} (#{message.value.inspect})"
+        message = Message.from_java(java_message) 
+        puts message.to_s
       end
 
     end

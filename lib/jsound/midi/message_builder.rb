@@ -45,7 +45,7 @@ module JSound
       def midi_command(type, channel, data1, data2=0)
         java_message = ShortMessage.new
         java_message.setMessage(type, channel, data1, data2)
-        return Message.new(java_message)
+        return Message.from_java(java_message)
       end
       
       def convert_to_7_bit(value)
