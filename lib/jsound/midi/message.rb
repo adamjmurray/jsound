@@ -56,7 +56,7 @@ module JSound
           # For command-type messages, the least significant 4 bits of the status byte will be the channel number.
           # java_message.command will return the desired command's status code in this case, or
           # we can just use a bitmask to grab the most significant 4 bits of the status byte like so:
-          status = (java_message.status & 0x80)
+          status = (java_message.status & 0xF0)
           
           message_class = CLASS_BY_STATUS[status]          
           if message_class
