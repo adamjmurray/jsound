@@ -9,7 +9,7 @@ module JSound
         def initialize(pitch, velocity=127, channel=0, java_message=nil)
           @pitch = pitch
           @velocity = velocity
-          @value = {:pitch => pitch, :velocity => velocity}
+          @data = {:pitch => pitch, :velocity => velocity}
           @channel = channel
           @java_message = java_message
         end
