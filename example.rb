@@ -1,6 +1,4 @@
-#!/Users/adam/bin/jruby
-# Point the above path to your jruby executable, or run this script with `jruby example.rb`
-
+#!/usr/bin/env jruby
 $: << File.dirname(__FILE__)+'/lib'
 require 'jsound'
 include JSound::Midi
