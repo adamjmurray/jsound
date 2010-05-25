@@ -1,4 +1,7 @@
 # A MIDI message
+# Subclasses in the Messages module deal with more of the low-level details.
+# See http://www.midi.org/techspecs/midimessages.php 
+# for details of how the MIDI spec defines these messages.
 
 module JSound
   module Midi
@@ -51,21 +54,21 @@ module JSound
           
         when ShortMessage
           message_class = CLASS_BY_STATUS[java_message.status]
-          puts CLASS_BY_STATUS.inspect
           if message_class
             return message_class.from_java(java_message)
           end
+          
+          # Old fallback code. Commented out cases have been implemented as classes in the Messages module
           type = case java_message.status
           when ShortMessage::ACTIVE_SENSING         then :active_sensing
-          when ShortMessage::CHANNEL_PRESSURE       then :channel_pressure
+          # when ShortMessage::CHANNEL_PRESSURE       then :channel_pressure
           when ShortMessage::CONTINUE               then :continue
-         # when ShortMessage::CONTROL_CHANGE         then :control_change
+          # when ShortMessage::CONTROL_CHANGE         then :control_change
           when ShortMessage::END_OF_EXCLUSIVE       then :end_of_exclusive
           when ShortMessage::MIDI_TIME_CODE         then :multi_time_code
-          # NOTE_ON/OFF case now handled by the NoteOn and NoteOff Message classes
           # when ShortMessage::NOTE_OFF               then :note_off
           # when ShortMessage::NOTE_ON                then :note_on
-         # when ShortMessage::PITCH_BEND             then :pitch_bend
+          # when ShortMessage::PITCH_BEND             then :pitch_bend
           when ShortMessage::POLY_PRESSURE          then :poly_pressure
           when ShortMessage::PROGRAM_CHANGE         then :program_change
           when ShortMessage::SONG_POSITION_POINTER  then :song_position_pointer
@@ -84,7 +87,7 @@ module JSound
           data = nil
         end 
         
-        new(type, java_message.channel, value, java_message)
+        new(type, java_message.channel, data, java_message)
       end
       
       def to_s

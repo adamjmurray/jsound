@@ -32,13 +32,13 @@ module JSound
       end
       alias channel_aftertouch channel_pressure
       
-      def poly_pressure(note, pressure, channel=0)
-        midi_command(ShortMessage::POLY_PRESSURE, channel, note, pressure)  
+      def poly_pressure(pitch, pressure, channel=0)
+        midi_command(ShortMessage::POLY_PRESSURE, channel, pitch, pressure)  
       end
       alias poly_aftertouch poly_pressure
 
-      def program_change(program_number, channel=0)
-        midi_command(ShortMessage::PROGRAM_CHANGE, channel, program_number)
+      def program_change(program, channel=0)
+        midi_command(ShortMessage::PROGRAM_CHANGE, channel, program)
       end
       
       # Build a Message object for MIDI commands, including
