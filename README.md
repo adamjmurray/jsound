@@ -8,23 +8,33 @@ and currently only supports the [MIDI API](http://java.sun.com/j2se/1.5.0/docs/a
 Getting started
 ---------------
 
-Download [JRuby 1.5+ Binary](http://jruby.org/download) and, if desired, put JRuby's bin folder on your PATH
+Download and unpack [the current release binary of JRuby](http://jruby.org/download) 
 
-Inside this project's folder, run:
+Put JRuby's bin folder on your PATH
 
-     jruby example.rb
+Download this project (github.com has a download link if you don't have git installed):
+
+     git clone git@github.com:adamjmurray/jsound.git
      
-Take a look at the comments in example.rb for some things to try, like:
+     cd jsound
 
-* route a MIDI input to a MIDI output
+Try the examples:
 
-* monitor a MIDI input by routing it to a JSound::Midi::Monitor
+     jruby examples/list_devices.rb
+     
+     jruby examples/monitor.rb
+     
+Take a look at the comments in examples/notes.rb for some notes on:
 
-* generate MIDI events and send them to an output
+* routing MIDI inputs to MIDI outputs
+
+* generating MIDI events and send them to an output
 
 
 Project Info
 ------------
+
+http://github.com/adamjmurray/jsound
 
 Author: Adam Murray (adam@compusition.com)
 

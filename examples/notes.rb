@@ -65,8 +65,8 @@ puts
 ######################################################
 ## MONITORING INPUT
 ##
-## Just route to an instance of JSound::Midi::Monitor:
-#> input >> Monitor.new
+## Route to an instance of JSound::Midi::Devices::Monitor
+#> input >> Devcies::Monitor.new
 
 
 ######################################################
