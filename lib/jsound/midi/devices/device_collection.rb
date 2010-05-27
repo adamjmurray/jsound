@@ -41,12 +41,11 @@ module JSound::Midi::Devices
     end
 
     def to_s
-      s = "["
-      for device in @coll
-        s += "," if s.length > 1
-        s += "\n#{device.to_s('  ')}"
-      end
-      s += "\n]"
+      @coll.join("\n")
+    end
+
+    def to_json(indent='')
+      "[\n" + @coll.map{|device| device.to_json(indent+'  ') }.join(",\n") + "\n]"
     end
 
     private

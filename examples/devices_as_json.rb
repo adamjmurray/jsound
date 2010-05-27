@@ -3,4 +3,4 @@ $: << File.dirname(__FILE__)+'/../lib'
 require 'jsound'
 include JSound::Midi
 
-puts DEVICES
+puts DEVICES.to_json

@@ -1,5 +1,4 @@
 #!/usr/bin/env jruby
-begin
 $: << File.dirname(__FILE__)+'/../lib'
 require 'jsound'
 include JSound::Midi
@@ -13,6 +12,3 @@ while(true)
   sleep 5
 end
   
-rescue
-  puts $!
-end

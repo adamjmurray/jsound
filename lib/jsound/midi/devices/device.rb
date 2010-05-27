@@ -45,7 +45,7 @@ module JSound::Midi::Devices
 
     def open
       unless @device.open?
-        puts "Opening #{short_s}"
+        puts "Opening #{to_s}"
         @device.open
         Device.open_devices << self
       end
@@ -53,7 +53,7 @@ module JSound::Midi::Devices
 
     def close
       if @device.open?
-        puts "Closing #{short_s}"          
+        puts "Closing #{to_s}"          
         @device.close
         Device.open_devices.delete(self)
       end
@@ -91,7 +91,11 @@ module JSound::Midi::Devices
       send field
     end
 
-    def to_s(indent='')
+    def to_s
+      "MIDI #{type} device: #{info.description}"
+    end
+
+    def to_json(indent='')
       fields = []
       fields << "#{indent}  type: '#{type}'"
       fields << "#{indent}  description: '#{escape info.description}'" if info.description !~ unknown?
@@ -100,11 +104,6 @@ module JSound::Midi::Devices
       fields << "#{indent}  version: '#{escape info.version}'" if info.version !~ unknown?      
       "#{indent}{\n" + fields.join(",\n") + "\n#{indent}}"
     end 
-
-    # A more compact String representation that should uniquely identify the device to a human.
-    def short_s
-      "MIDI #{type} device: #{info.description}"
-    end
 
   end
 end
