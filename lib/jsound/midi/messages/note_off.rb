@@ -1,10 +1,4 @@
-module JSound
-  module Midi
-    module Messages
-      
-      class NoteOff < NoteOn
-      end      
-      
-    end
-  end
+module JSound::Midi::Messages      
+  class NoteOff < NoteOn
+  end      
 end
