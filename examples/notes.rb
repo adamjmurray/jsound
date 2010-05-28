@@ -79,9 +79,9 @@ puts
 # output = OUTPUTS/:SimpleSynth
 # output.open  
 # while(true)
-#   output << note_on(60,70)
+#   output <= note_on(60,70)
 #   sleep 1
-#   output << note_off(60)
+#   output <= note_off(60)
 #   sleep 1
 # end
 #

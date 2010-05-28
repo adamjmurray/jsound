@@ -23,7 +23,7 @@ module JSound::Midi
     [DEVICES,INPUTS,OUTPUTS,SYNTHESIZERS,SEQUENCERS].each{|collection| collection.clear}
     MidiSystem.getMidiDeviceInfo.each do |device_info| 
       java_device = MidiSystem.getMidiDevice(device_info)
-      device = Device.new(java_device)
+      device = JDevice.new(java_device)
       case device.type
       when :sequencer   then SEQUENCERS   << device
       when :synthesizer then SYNTHESIZERS << device
