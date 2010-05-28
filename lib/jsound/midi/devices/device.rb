@@ -19,7 +19,7 @@ module JSound::Midi::Devices
     end
     
     def type
-      @type ||= :ruby_device
+      @type ||= :pass_through
     end
     
     def receiver
@@ -36,6 +36,10 @@ module JSound::Midi::Devices
     def <=(message)
       # default behavior is to pass the message to any connected receiver
       @receiver <= message if @receiver
+    end
+    
+    def to_s
+      "MIDI #{@type} device"
     end
      
   end

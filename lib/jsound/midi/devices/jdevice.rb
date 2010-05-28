@@ -45,7 +45,7 @@ module JSound::Midi::Devices
       unless @device.open?
         puts "Opening #{to_s}"
         @device.open
-        Device.open_devices << self
+        JDevice.open_devices << self
       end
     end   
 
@@ -53,7 +53,7 @@ module JSound::Midi::Devices
       if @device.open?
         puts "Closing #{to_s}"          
         @device.close
-        Device.open_devices.delete(self)
+        JDevice.open_devices.delete(self)
       end
     end       
 
@@ -65,9 +65,6 @@ module JSound::Midi::Devices
       end
     end 
 
-    # TODO: find the right way to abstract this up into Device,
-    # and then remove the special casing
-    # Clearly we need to hide the transmitter.receiver stuff behind an interface...
     def >>(device)
       if device.kind_of? JDevice
         device.open     
@@ -93,7 +90,7 @@ module JSound::Midi::Devices
     end
 
     def to_s
-      "MIDI #{type} device: #{info.description}"
+      "#{super}: #{info.description}"
     end
 
     def to_json(indent='')
