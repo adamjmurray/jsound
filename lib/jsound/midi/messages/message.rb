@@ -7,6 +7,7 @@ module JSound::Midi::Messages
   class Message
     include_package 'javax.sound.midi'
 
+    attr_accessor :source
     attr_reader :channel, :data, :java_message
 
     def initialize(type, channel, data, java_message=nil)
@@ -93,9 +94,18 @@ module JSound::Midi::Messages
       new(type, java_message.channel, data, java_message)
     end
 
-    def to_s
-      "[#{channel}] #{type}: #{data.inspect}"
-    end
+    def to_s      
+      s = ''
+      if @source
+        if @source.respond_to? :name
+          s += @source.name
+        else
+          s += @source.to_s
+        end
+      end
+      s += "[#{channel}] #{type}: #{data.inspect}"
+      return s
+    end    
 
   end
 end

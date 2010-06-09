@@ -36,7 +36,7 @@ module JSound::Midi::Devices
 
       case @type
       when :input
-        @bridge = Bridge.new        
+        @bridge = Bridge.new(self)        
         @device.transmitter.receiver = @bridge
       when :output
         @receiver = @device.receiver
