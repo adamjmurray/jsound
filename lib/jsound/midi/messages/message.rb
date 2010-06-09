@@ -24,8 +24,11 @@ module JSound::Midi::Messages
       # I'm using the convention that the message class names
       # correspond to the java ShortMessage constants, like:
       # NoteOn => ShortMessage::NOTE_ON
-      status = ShortMessage.const_get(child.type.to_s.upcase)
-      CLASS_BY_STATUS[status] = child
+      const_name = child.type.to_s.upcase
+      if ShortMessage.const_defined? const_name
+        status = ShortMessage.const_get(const_name)
+        CLASS_BY_STATUS[status] = child
+      end
     end
 
     def self.type
