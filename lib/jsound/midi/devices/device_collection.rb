@@ -37,7 +37,9 @@ module JSound::Midi::Devices
 
     def /(regexp)
       regexp = Regexp.new(regexp.to_s) if not regexp.kind_of? Regexp
-      find(regexp)
+      device = find(regexp)
+      device.open if device
+      return device
     end
 
     def to_s
