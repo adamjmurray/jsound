@@ -75,7 +75,13 @@ module JSound::Midi::Devices
     end
 
     def method_missing(sym, *args, &block)
-      @coll.send(sym, *args, &block)
+      if @coll.respond_to? sym
+        @coll.send(sym, *args, &block)
+      elsif args.length == 0 and block.nil?
+        self / sym
+      else
+        super
+      end
     end
           
   end 
