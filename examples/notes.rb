@@ -75,7 +75,7 @@ puts
 ## See message_builder.rb for list of messages currently supported,
 ## including pitch_bend, control_change, channel_pressure, and more
 #
-# include JSound::Midi::MessageBuilder
+# include JSound::Midi::Messages::Builder
 # output = OUTPUTS/:SimpleSynth
 # output.open  
 # while(true)
