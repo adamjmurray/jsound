@@ -3,6 +3,7 @@
 
 module JSound::Midi::Devices
   class Device
+    include JSound::TypeFromClassName    
 
     # open the device and allocate the needed resources so that it can send and receive messages
     def open
@@ -19,7 +20,8 @@ module JSound::Midi::Devices
     end
     
     def type
-      @type ||= :pass_through
+      # The base Device behaves like a 'pass through', otherwise determine type from classname.
+      @type ||= (if self.class == Device then :pass_through else self.class.type end)
     end
     
     def receiver
@@ -39,7 +41,7 @@ module JSound::Midi::Devices
     end
     
     def to_s
-      "MIDI #{@type} device"
+      "MIDI #{type} device"
     end
      
   end

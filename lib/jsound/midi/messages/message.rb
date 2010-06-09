@@ -6,10 +6,11 @@
 module JSound::Midi::Messages
   class Message
     include_package 'javax.sound.midi'
+    include JSound::TypeFromClassName
 
     attr_accessor :source
     attr_reader :channel, :data, :java_message
-
+    
     def initialize(type, channel, data, java_message=nil)
       @type = type
       @channel = channel
@@ -29,13 +30,6 @@ module JSound::Midi::Messages
         status = ShortMessage.const_get(const_name)
         CLASS_BY_STATUS[status] = child
       end
-    end
-
-    def self.type
-      # Extract class name (from fully qualified Module::Class string) 
-      # and convert to camelcase. 
-      # For example, JSound::Midi::Messages::NoteOn => 'note_on'     
-      name.split('::').last.gsub(/(.)([A-Z])/,'\1_\2').downcase.to_sym
     end
 
     def type
