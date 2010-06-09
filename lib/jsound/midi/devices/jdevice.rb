@@ -76,6 +76,7 @@ module JSound::Midi::Devices
     end
 
     def >>(device)
+      super
       @bridge >> device if @bridge
       # else ??? For outputs I guess this should be an error
     end   
