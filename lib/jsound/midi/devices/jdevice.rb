@@ -69,7 +69,11 @@ module JSound::Midi::Devices
       else
         info.send(sym, *args, &block)
       end
-    end 
+    end
+    
+    def respond_to?(sym)
+      super or @device.respond_to? sym or info.respond_to? sym
+    end
 
     def >>(device)
       @bridge >> device if @bridge
