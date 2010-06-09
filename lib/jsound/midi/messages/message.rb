@@ -24,7 +24,7 @@ module JSound::Midi::Messages
       # I'm using the convention that the message class names
       # correspond to the java ShortMessage constants, like:
       # NoteOn => ShortMessage::NOTE_ON
-      status = ShortMessage.const_get(child.type.upcase)
+      status = ShortMessage.const_get(child.type.to_s.upcase)
       CLASS_BY_STATUS[status] = child
     end
 
@@ -32,7 +32,7 @@ module JSound::Midi::Messages
       # Extract class name (from fully qualified Module::Class string) 
       # and convert to camelcase. 
       # For example, JSound::Midi::Messages::NoteOn => 'note_on'     
-      name.split('::').last.gsub(/(.)([A-Z])/,'\1_\2').downcase
+      name.split('::').last.gsub(/(.)([A-Z])/,'\1_\2').downcase.to_sym
     end
 
     def type
