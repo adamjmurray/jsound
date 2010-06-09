@@ -4,6 +4,7 @@ require 'jsound'
 include JSound::Midi
 
 INPUTS.each do |input| 
+  input.open
   input >> Devices::Monitor.new
 end
 

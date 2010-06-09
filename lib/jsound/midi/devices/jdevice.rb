@@ -34,7 +34,13 @@ module JSound::Midi::Devices
         end
       end
 
-      @receiver = @device.receiver if type == :output
+      case @type
+      when :input
+        @bridge = Bridge.new        
+        @device.transmitter.receiver = @bridge
+      when :output
+        @receiver = @device.receiver
+      end
     end
 
     def info
@@ -66,14 +72,8 @@ module JSound::Midi::Devices
     end 
 
     def >>(device)
-      if device.kind_of? JDevice
-        device.open     
-        receiver = device.receiver
-      else
-        receiver = device
-      end
-      self.open
-      @device.transmitter.receiver = receiver        
+      @bridge >> device if @bridge
+      # else ??? For outputs I guess this should be an error
     end   
 
     def <=(message)        
