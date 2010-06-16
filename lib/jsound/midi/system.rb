@@ -32,12 +32,13 @@ module JSound::Midi
       end 
       DEVICES << device    
     end
+    return DEVICES
   end
   refresh_devices()  
 
-  # Use this method directly after including this module
+  # You can use this method directly if you include this module
   def refresh_midi_devices
-    Midi.refresh_devices
+    JSound::Midi.refresh_devices
   end
 
 end
