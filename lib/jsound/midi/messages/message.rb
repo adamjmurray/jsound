@@ -6,7 +6,7 @@
 module JSound::Midi::Messages
   class Message
     include_package 'javax.sound.midi'
-    include JSound::TypeFromClassName
+    include JSound::Mixins::TypeFromClassName
 
     attr_accessor :source
     attr_reader :channel, :data, :java_message
@@ -34,8 +34,8 @@ module JSound::Midi::Messages
 
     def type
       # Generic Message objects specify a type explicitly (see initialize)
-      # Subclasses will typically use the class type (see self.type)
-      @type || self.class.type
+      # Subclasses will typically use the class type (see JSound::Mixins::TypeFromClassName)
+      @type ||= self.class.type
     end
 
     def self.from_java(java_message)

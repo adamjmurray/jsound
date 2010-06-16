@@ -1,6 +1,8 @@
 require 'java'
 
 require 'jsound/util'
+require 'jsound/mixins/type_from_class_name'
+
 require 'jsound/midi/data_conversion'
 
 require 'jsound/midi/messages/message'

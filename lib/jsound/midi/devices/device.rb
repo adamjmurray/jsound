@@ -3,7 +3,7 @@
 
 module JSound::Midi::Devices
   class Device
-    include JSound::TypeFromClassName    
+    include JSound::Mixins::TypeFromClassName    
 
     # open the device and allocate the needed resources so that it can send and receive messages
     def open
