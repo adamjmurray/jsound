@@ -20,5 +20,6 @@ require 'jsound/midi/devices/device_collection'
 require 'jsound/midi/devices/bridge'
 require 'jsound/midi/devices/jdevice'
 require 'jsound/midi/devices/monitor'
+require 'jsound/midi/devices/recorder'
 
 require 'jsound/midi/system'
