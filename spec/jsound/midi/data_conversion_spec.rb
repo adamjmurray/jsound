@@ -1,5 +1,5 @@
-#!/usr/bin/env jruby -S spec -f n
-require File.dirname(__FILE__)+'/spec_helper'
+#!/usr/bin/env jruby -S spec --format nested
+require File.dirname(__FILE__)+'/../../spec_helper'
 
 include JSound::Midi::DataConversion
 
