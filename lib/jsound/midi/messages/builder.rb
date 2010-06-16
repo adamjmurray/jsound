@@ -3,22 +3,21 @@
 module JSound::Midi::Messages
   module Builder
     include_package 'javax.sound.midi'
-    include JSound::Midi::DataConversion
-
+    
     def note_on(pitch, velocity=127, channel=0)
       midi_command(ShortMessage::NOTE_ON, channel, pitch, velocity)
     end
-
+    
     def note_off(pitch, velocity=0, channel=0)
       midi_command(ShortMessage::NOTE_OFF, channel, pitch, velocity)
     end
-
+    
     # Most methods in here take 7-bit ints for their args, but this one takes a 14-bit
     # The value can be an int in the range 0-16383 (8192 is no bend)
     # or it can be a float, which is assumed to be in the range -1.0 to 1.0
     def pitch_bend(value, channel=0)
       value = normalized_float_to_14bit(value) if value.is_a? Float        
-      lsb, msb = to_7bit(value)
+      lsb, msb = JSound::Midi::DataConversion.to_7bit(value)
       midi_command(ShortMessage::PITCH_BEND, channel, lsb, msb)
     end
 
@@ -46,6 +45,11 @@ module JSound::Midi::Messages
       java_message = ShortMessage.new
       java_message.setMessage(type, channel, data1, data2)
       return Message.from_java(java_message)
+    end
+
+    # Make all methods be module functions (accessible by sending the method name to module directly)
+    instance_methods.each do |method|
+      module_function method
     end
 
   end
