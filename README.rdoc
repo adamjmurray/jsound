@@ -23,7 +23,7 @@ License::  Distributed under the MIT license, see license.txt
    o. via the download link on {this project's github page}[http://github.com/adamjmurray/jsound]
    o. via git:
 
-        git clone git@github.com:adamjmurray/jsound.git
+        git clone http://github.com/adamjmurray/jsound.git
         cd jsound
 
 0. Try the examples (monitor.rb prints any input it receives, try playing a MIDI keyboard):
