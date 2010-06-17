@@ -5,67 +5,71 @@ module JSound::Midi::Devices
   describe Recorder do
 
     before(:each) do
-      @subject = Recorder.new
+      @recorder = Recorder.new
     end
-    
+
     context 'initial state' do
       it 'should not record anything' do
-        @subject <= :message
-        @subject.messages.should be_empty    
+        @recorder <= :message
+        @recorder.messages.should be_empty    
       end
     end
-  
-    context '#start' do
-      it 'should start recording' do
-        @subject.start
-        @subject <= :message
-        @subject.messages.should == [:message]
+
+    context 'instance methods' do
+      
+      describe '#start' do
+        it 'should start recording' do
+          @recorder.start
+          @recorder <= :message
+          @recorder.messages.should == [:message]
+        end
       end
+
+      describe '#messages' do
+        it 'should return all recorded messages in an Array' do
+          @recorder.start
+          @recorder <= :one
+          @recorder <= 2
+          @recorder <= 'three'
+          @recorder.messages.should == [:one, 2, 'three']
+        end
+      end
+
+      describe '#stop' do
+        it 'should stop recording' do
+          @recorder.start
+          @recorder <= :message_while_started        
+          @recorder.stop      
+          @recorder <= :message_while_stopped
+          @recorder.messages.should == [:message_while_started]      
+        end
+      end
+
+      describe '#clear' do
+        it 'should clear the recorded messages' do
+          @recorder.start
+          @recorder <= :message
+          @recorder.clear
+          @recorder.messages.should be_empty
+        end
+      end
+
+      describe '#recording?' do
+        it 'should be false in the initial state' do
+          @recorder.recording?.should be_false
+        end
+        it 'should be true after #start' do
+          @recorder.start
+          @recorder.recording?.should be_true
+        end
+        it 'should be false after #end' do
+          @recorder.start
+          @recorder.stop
+          @recorder.recording?.should be_false
+        end
+      end
+      
     end
-    
-    context '#messages' do
-      it 'should store multiple messages in an Array' do
-        @subject.start
-        @subject <= :one
-        @subject <= 2
-        @subject <= 'three'
-        @subject.messages.should == [:one, 2, 'three']
-      end
-    end
-    
-    context '#stop' do
-      it 'should stop recording' do
-        @subject.start
-        @subject <= :message_while_started        
-        @subject.stop      
-        @subject <= :message_while_stopped
-        @subject.messages.should == [:message_while_started]      
-      end
-    end
-    
-    context '#clear' do
-      it 'should clear the recorded messages' do
-        @subject.start
-        @subject <= :message
-        @subject.clear
-        @subject.messages.should be_empty
-      end
-    end
-    
-    context '#recording?' do
-      it 'should be false in the initial state' do
-        @subject.recording?.should be_false
-      end
-      it 'should be true after #start' do
-        @subject.start
-        @subject.recording?.should be_true
-      end
-      it 'should be false after #end' do
-        @subject.start
-        @subject.stop
-        @subject.recording?.should be_false
-      end
-    end
-    
+
   end
 end
