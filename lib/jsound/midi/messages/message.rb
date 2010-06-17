@@ -1,9 +1,9 @@
-# A generic MIDI message
-# The various subclasses in this module deal with specific message details.
-# See http://www.midi.org/techspecs/midimessages.php 
-# for info on how the MIDI spec defines these messages.
-
 module JSound::Midi::Messages
+
+  # A generic MIDI message.
+  # The various subclasses in this module deal with specific message details.
+  # See http://www.midi.org/techspecs/midimessages.php 
+  # for info on how the MIDI spec defines these messages.
   class Message
     include_package 'javax.sound.midi'
     include JSound::Mixins::TypeFromClassName

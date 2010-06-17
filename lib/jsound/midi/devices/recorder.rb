@@ -3,6 +3,7 @@ module JSound::Midi::Devices
   # A Device that records incoming messages
   class Recorder < Device
 
+    # The recorded messages
     attr_reader :messages
 
     def initialize()
@@ -10,18 +11,22 @@ module JSound::Midi::Devices
       stop
     end
     
+    # clear any recorded messages
     def clear
       @messages = []
     end
     
+    # start recording
     def start
       @recording = true
     end
     
+    # stop recording
     def stop
       @recording = false
     end
     
+    # true if this object is currently recording
     def recording?
       @recording
     end

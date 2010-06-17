@@ -1,7 +1,7 @@
-# A device that can transmit and/or receive MIDI messages
-# This default implementation simply passes through all messages
-
 module JSound::Midi::Devices
+
+  # A device that can transmit and/or receive messages (typically MIDI messages).
+  # This default implementation simply passes through all messages.
   class Device
     include JSound::Mixins::TypeFromClassName    
 

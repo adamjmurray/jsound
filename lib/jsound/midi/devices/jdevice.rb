@@ -1,7 +1,6 @@
-# A Java-provided MIDI device
-# Wraps javax.sound.midi.MidiDevice objects
-
 module JSound::Midi::Devices
+
+  # A Java-provided MIDI device (wraps javax.sound.midi.MidiDevice objects)
   class JDevice < Device
     include_package 'javax.sound.midi'      
     include JSound::Util

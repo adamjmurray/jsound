@@ -1,6 +1,6 @@
-# Helper methods for converting MIDI data values
-
 module JSound::Midi
+
+  # Helper methods for converting MIDI data values
   module DataConversion
 
     # The maximum value for unsigned 14-bit integer

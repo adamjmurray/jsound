@@ -1,6 +1,6 @@
-# Common utilities
-
 module JSound  
+
+  # Common utilities
   module Util
   
     # A regexp matcher for unknown device attributes

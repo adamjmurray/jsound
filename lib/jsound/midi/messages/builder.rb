@@ -1,6 +1,6 @@
-# An includeable module with convenient methods for building MIDI messages.
-
 module JSound::Midi::Messages
+
+  # A collection of methods for building MIDI messages.
   module Builder
     include_package 'javax.sound.midi'
     

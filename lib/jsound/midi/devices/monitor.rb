@@ -1,6 +1,6 @@
-# A device that prints out all incoming MIDI message.
-
 module JSound::Midi::Devices  
+
+  # A device that prints out all incoming MIDI message.
   class Monitor < Device
     def <=(message)
       puts message.to_s

@@ -1,7 +1,6 @@
-# A collection of MIDI devices
-# Provides methods to locate specific devices
-
 module JSound::Midi::Devices
+
+  # A collection of MIDI devices that provides methods to locate specific devices
   class DeviceCollection
     include JSound::Util      
 
