@@ -1,20 +1,33 @@
-#!/usr/bin/env jruby -S spec --format nested
-require File.dirname(__FILE__)+'/../../spec_helper'
+require 'spec_helper'
 
-include JSound::Midi
+module JSound
+  describe Midi do
 
-describe JSound::Midi do
-  
-  it 'should find devices' do
-    # We don't care what it finds, but if it can't find something, then this library is not useful:      
-    DEVICES.length.should > 0    
-  end
-  
-  context '#refresh_midi_devices' do
-    it 'should refresh the list of midi devices' do
-      DEVICES.clear
-      refresh_midi_devices
-      DEVICES.length.should > 0
+    # The spec doesn't care what MIDI devices are found, 
+    # but it better find something or this library is not useful.     
+
+    it 'should have DEVICES' do
+      Midi::DEVICES.should_not be_empty  
     end
+
+    it 'should have some INPUTS or OUTPUTS' do
+      (Midi::INPUTS.length + Midi::OUTPUTS.length).should > 1
+    end 
+
+    context 'with Midi included' do
+      include Midi
+      describe '#refresh_devices' do
+        it 'should refresh the list of midi devices' do
+          Midi::DEVICES.clear
+          refresh_devices
+          Midi::DEVICES.should_not be_empty
+        end
+      end
+    end
+
+    it 'should expose #refresh_devices as a module function' do
+      Midi.refresh_devices
+    end
+
   end
 end

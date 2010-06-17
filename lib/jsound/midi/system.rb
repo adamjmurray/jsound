@@ -18,9 +18,7 @@ module JSound
     SEQUENCERS = DeviceCollection.new
 
     # Refresh the list of connected devices.
-    # This happens automatically when the class is loaded.
-    # You can call it again if you attach a new device during program execution.
-    def self.refresh_devices
+    def refresh_devices
       [DEVICES,INPUTS,OUTPUTS,SYNTHESIZERS,SEQUENCERS].each{|collection| collection.clear}
       MidiSystem.getMidiDeviceInfo.each do |device_info| 
         java_device = MidiSystem.getMidiDevice(device_info)
@@ -34,13 +32,11 @@ module JSound
         DEVICES << device    
       end
       return DEVICES
-    end
-    refresh_devices()  
+    end    
+    module_function :refresh_devices
 
-    # You can use this method directly if you include this module
-    def refresh_midi_devices
-      JSound::Midi.refresh_devices
-    end
+    # Refresh devices automatically when loaded:
+    refresh_devices()  
 
   end
 end
