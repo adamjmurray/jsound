@@ -4,7 +4,7 @@ module JSound::Midi
 
   describe Device do
     let(:device)   { Device.new }
-    let(:receiver) { mock('receiver') }
+    let(:receiver) { mock('device') }
 
     describe '#>>' do
       it 'should connect to a receiver' do

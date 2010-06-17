@@ -32,9 +32,9 @@ module JSound::Midi::Messages
       end
     end
 
+    # Generic Message objects specify a type explicitly (see initialize).
+    # Subclasses will typically use the class type (see JSound::Mixins::TypeFromClassName).
     def type
-      # Generic Message objects specify a type explicitly (see initialize)
-      # Subclasses will typically use the class type (see JSound::Mixins::TypeFromClassName)
       @type ||= self.class.type
     end
 
