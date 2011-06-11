@@ -26,15 +26,15 @@ Getting started
       - Put the JRuby bin folder on your PATH
    - or via [rvm](https://rvm.beginrescueend.com/) (adjust the JRuby version number as desired):
 
-           rvm install jruby-1.6.2
-           rvm use jruby-1.6.2
+             rvm install jruby-1.6.2
+             rvm use jruby-1.6.2
 
 0. Download this project, either:
    - via the download link on [this project's github page](http://github.com/adamjmurray/jsound)
    - or via git:
 
-           git clone http://github.com/adamjmurray/jsound.git
-           cd jsound
+             git clone http://github.com/adamjmurray/jsound.git
+             cd jsound
 
 0. Try the examples (monitor.rb prints any input it receives, try playing a MIDI keyboard):
 
