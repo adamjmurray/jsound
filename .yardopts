@@ -1,0 +1,4 @@
+--readme README.md
+--title "JSound: a Ruby wrapper for Java's sound API"
+--charset utf-8
+lib/**/*.rb
