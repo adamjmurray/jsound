@@ -5,7 +5,7 @@ module JSound::Midi::Devices
 
     let(:generator) { Generator.new }
     let(:receiver) { mock('device') }
-    before(:all) { generator >> receiver }
+    before { generator >> receiver }
 
     it "should generate note_on messages" do
       receiver.should_receive(:<=).once.with note_on_message(0)

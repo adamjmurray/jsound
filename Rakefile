@@ -1,5 +1,5 @@
 # Since this is a JRuby-based project, run this Rakefile with: jruby -S rake
-require 'spec/rake/spectask'
+require 'rspec/core/rake_task'
 
 task :default => :spec
 
