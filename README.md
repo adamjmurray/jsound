@@ -77,7 +77,7 @@ Development Notes
 
 and to quickly check compatibility with multiple JRuby versions via rvm:
 
-     rvm jruby-1.5.6,jruby-1.6.2 rake spec
+     rvm jruby-1.5.6,jruby-1.6.2 rake spec:fast
 
 
 ### Generate Docs ###
