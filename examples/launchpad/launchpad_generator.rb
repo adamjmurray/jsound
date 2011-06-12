@@ -1,5 +1,5 @@
 # A device for controlling a Novation Launchpad
-# To try this example, do this from the top-level project folder
+# To try this example, do this from the top-level project source folder
 =begin
 
   jirb -I lib

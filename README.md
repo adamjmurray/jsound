@@ -20,21 +20,18 @@ License:  Distributed under a permissive BSD-style license, see LICENSE.txt
 Getting started
 ---------------
 
-0. Install a recent version of JRuby, either:
+0. Install JRuby 1.5 or 1.6, either:
    - via manual installation
       - Download and unpack the [current binary version of JRuby](http://jruby.org/download)
       - Put the JRuby bin folder on your PATH
-   - or via [rvm](https://rvm.beginrescueend.com/) (adjust the JRuby version number as desired):
+   - or via [rvm](https://rvm.beginrescueend.com/) (adjust version number as desired):
 
              rvm install jruby-1.6.2
              rvm use jruby-1.6.2
 
-0. Download this project, either:
-   - via the download link on [this project's github page](http://github.com/adamjmurray/jsound)
-   - or via git:
+0. Install JSound
 
-             git clone http://github.com/adamjmurray/jsound.git
-             cd jsound
+         jgem install jsound
 
 0. Try the examples (monitor.rb prints any input it receives, try playing a MIDI keyboard):
 
@@ -45,6 +42,14 @@ Getting started
    - routing MIDI inputs to MIDI outputs
    - generating MIDI events and sending them to an output
 
+
+
+Documentation
+-------------
+
+Gem: http://rubydoc.info/gems/jsound/0.0.1/frames
+
+Latest for source: http://rubydoc.info/github/adamjmurray/jsound/master/frames
 
 
 Notes
@@ -84,3 +89,8 @@ and to quickly check compatibility with multiple JRuby versions via rvm:
 
      yard
      open doc/frames.html
+
+
+### Project Roadmap ###
+
+https://www.pivotaltracker.com/projects/85719
