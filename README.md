@@ -1,5 +1,5 @@
-JSound: a Ruby wrapper for Java's sound API
-===========================================
+JSound: a Ruby wrapper for the Java sound API
+=============================================
 
 This library requires [JRuby](http://jruby.org)
 and currently only supports the [MIDI API](http://java.sun.com/j2se/1.5.0/docs/api/javax/sound/midi/package-summary.html)
@@ -13,7 +13,7 @@ Home:     http://github.com/adamjmurray/jsound
 
 Author:   Adam Murray (adam@compusition.com)
 
-License:  Distributed under the MIT license, see license.txt
+License:  Distributed under a permissive BSD-style license, see LICENSE.txt
 
 
 
