@@ -16,7 +16,7 @@ require 'jsound/midi/messages/poly_pressure'
 require 'jsound/midi/messages/program_change'
 
 require 'jsound/midi/devices/device'
-require 'jsound/midi/devices/device_collection'
+require 'jsound/midi/devices/device_list'
 require 'jsound/midi/devices/bridge'
 require 'jsound/midi/devices/generator'
 require 'jsound/midi/devices/jdevice'

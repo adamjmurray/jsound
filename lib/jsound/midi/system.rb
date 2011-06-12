@@ -1,21 +1,24 @@
 module JSound
 
-  # Core interface for accessing midi devices
+  # Core interface for accessing MIDI devices
   module Midi
     include_package 'javax.sound.midi'
     include Devices
 
-    # All devices
-    DEVICES = DeviceCollection.new
+    # All MIDI devices
+    DEVICES = DeviceList.new
 
-    # Devices by type:
-    INPUTS = DeviceCollection.new
+    # MIDI input devices
+    INPUTS = DeviceList.new
 
-    OUTPUTS = DeviceCollection.new
+    # MIDI output devices
+    OUTPUTS = DeviceList.new
 
-    SYNTHESIZERS = SYNTHS = DeviceCollection.new
+    # MIDI synthesizer devices
+    SYNTHESIZERS = SYNTHS = DeviceList.new
 
-    SEQUENCERS = DeviceCollection.new
+    # MIDI sequencer devices
+    SEQUENCERS = DeviceList.new
 
     # Refresh the list of connected devices.
     def refresh_devices
