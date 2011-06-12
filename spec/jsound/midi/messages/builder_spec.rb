@@ -18,7 +18,5 @@ module JSound::Midi::Messages
 
     end
 
-    it 'should have more comprehensive specs'
-
   end
 end

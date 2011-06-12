@@ -3,7 +3,7 @@ module JSound::Midi::Devices
   # A device that can transmit and/or receive messages (typically MIDI messages).
   # This default implementation simply passes through all messages.
   class Device
-    include JSound::Mixins::TypeFromClassName    
+    include JSound::Mixins::TypeFromClassName
 
     # open the device and allocate the needed resources so that it can send and receive messages
     def open
@@ -20,8 +20,8 @@ module JSound::Midi::Devices
     end
     
     def type
-      # The base Device behaves like a 'pass through', otherwise determine type from classname.
-      @type ||= (if self.class == Device then :pass_through else self.class.type end)
+      # The base Device behaves like a 'pass through'
+      @type ||= (self.class == Device ? :pass_through : self.class.type)
     end
     
     def receiver
@@ -32,13 +32,14 @@ module JSound::Midi::Devices
     def receiver=(receiver)      
       @receiver = receiver
     end
-    alias >> receiver=
+    alias :>> :receiver=
     
     # send a message to this device
-    def <=(message)
+    def message(message)
       # default behavior is to pass the message to any connected receiver
-      @receiver <= message if @receiver
+      @receiver.message message if @receiver
     end
+    alias :<= :message
     
     def to_s
       "MIDI #{type} device"
