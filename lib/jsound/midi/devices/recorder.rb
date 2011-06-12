@@ -31,7 +31,7 @@ module JSound::Midi::Devices
       @recording
     end
     
-    def <=(message)
+    def message(message)
       @messages << message if recording?
     end
     

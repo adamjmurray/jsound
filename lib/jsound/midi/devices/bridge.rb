@@ -15,7 +15,7 @@ module JSound::Midi::Devices
     def send(java_message, timestamp=-1)
       message = JSound::Midi::Messages::Message.from_java(java_message) 
       message.source = @source_device
-      self <= message
+      self.message message
     rescue
       STDERR.puts $! if $DEBUG # otherwise this can get swallowed
       raise

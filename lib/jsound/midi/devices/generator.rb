@@ -10,7 +10,7 @@ module JSound::Midi::Devices
     Builder.private_instance_methods.each do |method|
       define_method(method) do |*args|
         message = Builder.send(method, *args)
-        self <= message
+        self.message message
       end
     end
     

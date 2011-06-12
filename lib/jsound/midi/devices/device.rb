@@ -39,7 +39,11 @@ module JSound::Midi::Devices
       # default behavior is to pass the message to any connected receiver
       @receiver.message message if @receiver
     end
-    alias :<= :message
+
+    # send a message to this device. shortcut for #message
+    def <=(message)
+      message(message)
+    end
     
     def to_s
       "MIDI #{type} device"

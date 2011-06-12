@@ -80,7 +80,7 @@ module JSound::Midi::Devices
       # else ??? For outputs I guess this should be an error
     end   
 
-    def <=(message)        
+    def message(message)
       # unwrap the ruby message wrapper, if needed:
       message = message.java_message if message.respond_to? :java_message
 
