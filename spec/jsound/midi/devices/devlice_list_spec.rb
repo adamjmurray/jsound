@@ -20,6 +20,17 @@ module JSound::Midi
       end
     end
 
+    describe "#open" do
+      it "acts like #find and also opens the device" do
+        device2.should_receive :open
+        device_list.open(/Mock.*2/).should == device2
+      end
+
+      it "raises an error when no device is not found" do
+        lambda{ device_list.open(:nothing) }.should raise_error
+      end
+    end
+
     describe "#/" do
       it "finds and opens the first device matching a regexp constructed from the argument" do
         device1.should_receive(:open)
@@ -35,8 +46,14 @@ module JSound::Midi
     describe "#method_missing" do
       it "acts like #/ for unimplemented methods" do
         device1.should_receive(:open)
-        device_list.Mock.should == device1
+        device_list.mock.should == device1
       end
+
+      it "treats '_' like a wildard" do
+        device2.should_receive(:open)
+        device_list.mock_2.should == device2
+      end
+
     end
 
   end
