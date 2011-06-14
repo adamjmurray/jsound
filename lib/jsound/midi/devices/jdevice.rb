@@ -5,6 +5,13 @@ module JSound::Midi::Devices
     include_package 'javax.sound.midi'      
     include JSound::Util
 
+    # the javax.sound.midi.MidiDevice.Info object for this java device
+    attr_reader :info
+
+    # the description of this device
+    # @return [String]
+    attr_reader :description
+    
     def self.open_devices
       @@open_devices ||= []
     end
@@ -17,6 +24,8 @@ module JSound::Midi::Devices
 
     def initialize(device)
       @device = device        
+      @info = @device.deviceInfo
+      @description = @info.description
 
       # set the type:
       case device
@@ -42,10 +51,6 @@ module JSound::Midi::Devices
       end
     end
 
-    def info
-      @device.deviceInfo
-    end
-
     def open
       unless @device.open?
         puts "Opening #{to_s}"
@@ -66,7 +71,7 @@ module JSound::Midi::Devices
       if @device.respond_to? sym
         @device.send(sym, *args, &block)
       else
-        info.send(sym, *args, &block)
+        @info.send(sym, *args, &block)
       end
     end
     
@@ -95,6 +100,10 @@ module JSound::Midi::Devices
 
     def to_s
       "#{super}: #{info.description}"
+    end
+
+    def inspect
+      to_s
     end
 
     def to_json(indent='')
