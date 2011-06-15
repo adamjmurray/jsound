@@ -5,104 +5,154 @@ module JSound::Midi::Messages
   # See http://www.midi.org/techspecs/midimessages.php 
   # for info on how the MIDI spec defines these messages.
   class Message
-    include_package 'javax.sound.midi'
     include JSound::Mixins::TypeFromClassName
 
-    attr_accessor :source
-    attr_reader :channel, :data, :java_message
-    
-    def initialize(type, channel, data, java_message=nil)
-      @type = type
-      @channel = channel
+    # The MIDI input {Device} which received this message.
+    attr_reader :source
+
+    # The variable data for this message type. Contents depend on the message type.
+    # @example a NoteOn's #data is [pitch,velocity]
+    attr_reader :data
+
+    # The channel number of the message
+    attr_reader :channel
+
+    # The type of message, such as :note_on or :control_change
+    # @return [Symbol]
+    attr_reader :type
+
+    def initialize(data, channel, options={})
       @data = data
-      @java_message = java_message        
+      @channel = channel
+
+      # Generic Message objects specify a type explicitly (see initialize).
+      # Subclasses will typically use the class type (see JSound::Mixins::TypeFromClassName).
+      @type = options[:type] ||= self.class.type
+
+      @java_message = options[:java_message]
+
+      @source = options[:source]
     end
 
-    # Maps java message status values to ruby classes
-    CLASS_BY_STATUS = {}
+    # Map java message status values to ruby classes
+    CLASS_FOR_STATUS = {}
 
-    def self.inherited(child)
+    # Map ruby classes to java message status values
+    STATUS_FOR_CLASS = {}
+
+    def self.inherited(child_class)
       # I'm using the convention that the message class names
       # correspond to the java ShortMessage constants, like:
       # NoteOn => ShortMessage::NOTE_ON
-      const_name = child.type.to_s.upcase
-      if ShortMessage.const_defined? const_name
-        status = ShortMessage.const_get(const_name)
-        CLASS_BY_STATUS[status] = child
+      const_name = child_class.type.to_s.upcase
+      if javax.sound.midi.ShortMessage.const_defined? const_name
+        status = javax.sound.midi.ShortMessage.const_get(const_name)
+        CLASS_FOR_STATUS[status] = child_class
+        STATUS_FOR_CLASS[child_class] = status
       end
     end
 
-    # Generic Message objects specify a type explicitly (see initialize).
-    # Subclasses will typically use the class type (see JSound::Mixins::TypeFromClassName).
-    def type
-      @type ||= self.class.type
+    TYPE_FOR_STATUS = {
+      javax.sound.midi.ShortMessage::ACTIVE_SENSING        => :active_sensing,
+      javax.sound.midi.ShortMessage::CONTINUE              => :continue,
+      javax.sound.midi.ShortMessage::END_OF_EXCLUSIVE      => :end_of_exclusive,
+      javax.sound.midi.ShortMessage::MIDI_TIME_CODE        => :multi_time_code,
+      javax.sound.midi.ShortMessage::SONG_POSITION_POINTER => :song_position_pointer,
+      javax.sound.midi.ShortMessage::SONG_SELECT           => :song_select,
+      javax.sound.midi.ShortMessage::START                 => :start,
+      javax.sound.midi.ShortMessage::STOP                  => :stop,
+      javax.sound.midi.ShortMessage::SYSTEM_RESET          => :system_reset,
+      javax.sound.midi.ShortMessage::TIMING_CLOCK          => :timing_clock,
+      javax.sound.midi.ShortMessage::TUNE_REQUEST          => :tune_request
+    }
+
+    STATUS_FOR_TYPE = TYPE_FOR_STATUS.invert
+
+    # true when the argument has the same {#type}, {#channel}, and {#data}
+    def == other
+      other.respond_to? :type and type == other.type and
+      other.respond_to? :channel and channel == other.channel and
+      other.respond_to? :data and data == other.data
     end
 
-    def self.from_java(java_message)
+    def self.from_java(java_message, options={})
       case java_message
-      when SysexMessage
+      when javax.sound.midi.SysexMessage
         type = :sysex
         data = java_message.data # this is a byte array in Java, might need conversion?
 
-      when MetaMessage  
+      when javax.sound.midi.MetaMessage
         type = :meta
         data = java_message.data # this is a byte array in Java, might need conversion?
 
-      when ShortMessage
+      when javax.sound.midi.ShortMessage
         # For command-type messages, the least significant 4 bits of the status byte will be the channel number.
         # java_message.command will return the desired command's status code in this case, or
         # we can just use a bitmask to grab the most significant 4 bits of the status byte like so:
         status = (java_message.status & 0xF0)
 
-        message_class = CLASS_BY_STATUS[status]          
-        if message_class
-          return message_class.from_java(java_message)
-        end
+        message_class = CLASS_FOR_STATUS[status]
+        return message_class.from_java(java_message, options) if message_class
 
-        # Old fallback code. Commented out cases have been implemented as classes in the Messages module
-        type = case status
-        when ShortMessage::ACTIVE_SENSING         then :active_sensing
-          # when ShortMessage::CHANNEL_PRESSURE       then :channel_pressure
-        when ShortMessage::CONTINUE               then :continue
-          # when ShortMessage::CONTROL_CHANGE         then :control_change
-        when ShortMessage::END_OF_EXCLUSIVE       then :end_of_exclusive
-        when ShortMessage::MIDI_TIME_CODE         then :multi_time_code
-          # when ShortMessage::NOTE_OFF               then :note_off
-          # when ShortMessage::NOTE_ON                then :note_on
-          # when ShortMessage::PITCH_BEND             then :pitch_bend
-          # when ShortMessage::POLY_PRESSURE          then :poly_pressure
-          # when ShortMessage::PROGRAM_CHANGE         then :program_change
-        when ShortMessage::SONG_POSITION_POINTER  then :song_position_pointer
-        when ShortMessage::SONG_SELECT            then :song_select
-        when ShortMessage::START                  then :start
-        when ShortMessage::STOP                   then :stop
-        when ShortMessage::SYSTEM_RESET           then :system_reset
-        when ShortMessage::TIMING_CLOCK           then :timing_clock
-        when ShortMessage::TUNE_REQUEST           then :tune_request
-        else :unknown     
-        end
+        type = TYPE_FOR_STATUS[status] || :unknown
         data = [java_message.data1, java_message.data2]
 
       else
         type  = :unknown
-        data = nil
+        data = []
       end 
 
-      new(type, java_message.channel, data, java_message)
+      new data, java_message.channel, options.merge({:type => type, :java_message => java_message})
     end
 
-    def to_s      
-      s = ''
-      if @source
-        if @source.respond_to? :name
-          s += @source.name
-        else
-          s += @source.to_s
-        end
+    def to_java
+      if not @java_message
+        @java_message = javax.sound.midi.ShortMessage.new
+        update_java_message
       end
-      s += "[#{channel}] #{type}: #{data.inspect}"
-      return s
-    end    
+      # else, since all ruby message classes are backed by "ShortMessage",
+      # we should be able to rely on @java_message being set for everything else
+      @java_message
+    end
+
+    def update_java_message
+      @java_message.setMessage(status, @channel, @data[0], @data[1]) if @java_message
+    end
+
+    def data= data
+      @data = data
+      update_java_message
+    end
+
+    def data1
+      @data[0] if @data
+    end
+
+    def data1= data
+      @data[0] = data
+      update_java_message
+    end
+
+    def data2
+      @data[1] if @data
+    end
+
+    def data2= data
+      @data[1] = data
+      update_java_message
+    end
+
+    def status
+      @status ||= (STATUS_FOR_CLASS[self.class] || STATUS_FOR_TYPE[@type])
+    end
+
+    def value
+      @data
+    end
+
+    def to_s
+      "#{type}(#{channel}): #{value.inspect}"
+    end
 
   end
 end

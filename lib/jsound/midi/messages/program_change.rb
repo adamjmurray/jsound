@@ -1,16 +1,16 @@
 module JSound::Midi::Messages     
   class ProgramChange < Message
 
-    attr_reader :program
-
-    def initialize(program, channel=0, java_message=nil)
-      @data = @program = program
-      @channel = channel
-      @java_message = java_message
+    def initialize(program, channel=0, options={})
+      super([program,0], channel, options)
+      @program = program
     end
 
-    def self.from_java(java_message)          
-      new(java_message.data1, java_message.channel, java_message)
+    alias program data1
+    alias program= data1=
+
+    def self.from_java(java_message, options={})
+      new java_message.data1, java_message.channel, options.merge({:java_message => java_message})
     end        
 
   end      

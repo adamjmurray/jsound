@@ -1,18 +1,18 @@
 module JSound::Midi::Messages      
   class PolyPressure < Message
 
-    attr_reader :pitch, :pressure
-
-    def initialize(pitch, pressure, channel=0, java_message=nil)
-      @pitch = pitch
-      @pressure = pressure
-      @data = {:pitch => pitch, :pressure => pressure}
-      @channel = channel
-      @java_message = java_message
+    def initialize(pitch, pressure, channel=0, options={})
+      super([pitch,pressure], channel, options)
     end
 
-    def self.from_java(java_message)          
-      new(java_message.data1, java_message.data2, java_message.channel, java_message)
+    alias pitch data1
+    alias pitch= data1=
+
+    alias pressure data2
+    alias pressure= data2=
+
+    def self.from_java(java_message, options={})
+      new java_message.data1, java_message.data2, java_message.channel, options.merge({:java_message => java_message})
     end        
 
   end      

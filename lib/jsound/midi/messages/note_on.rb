@@ -1,18 +1,19 @@
-module JSound::Midi::Messages      
+module JSound::Midi::Messages
+
   class NoteOn < Message
 
-    attr_reader :pitch, :velocity
-
-    def initialize(pitch, velocity=127, channel=0, java_message=nil)
-      @pitch = pitch
-      @velocity = velocity
-      @data = {:pitch => pitch, :velocity => velocity}
-      @channel = channel
-      @java_message = java_message
+    def initialize(pitch, velocity=127, channel=0, options={})
+      super([pitch,velocity], channel, options)
     end
 
-    def self.from_java(java_message)          
-      new(java_message.data1, java_message.data2, java_message.channel, java_message)
+    alias pitch data1
+    alias pitch= data1=
+
+    alias velocity data2
+    alias velocity= data2=
+
+    def self.from_java(java_message, options={})
+      new java_message.data1, java_message.data2, java_message.channel, options.merge({:java_message => java_message})
     end        
 
   end      

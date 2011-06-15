@@ -1,16 +1,15 @@
 module JSound::Midi::Messages
   class ChannelPressure < Message
 
-    attr_reader :pressure
-
-    def initialize(pressure, channel=0, java_message=nil)
-      @data = @pressure = pressure
-      @channel = channel
-      @java_message = java_message
+    def initialize(pressure, channel=0, options={})
+      super([pressure, 0], channel, options)
     end
 
-    def self.from_java(java_message)
-      new(java_message.data1, java_message.channel, java_message)
+    alias pressure data1
+    alias pressure= data1=
+
+    def self.from_java(java_message, options={})
+      new java_message.data1, java_message.channel, options.merge({:java_message => java_message})
     end        
 
   end      

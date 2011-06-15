@@ -8,7 +8,7 @@ module JSound::Midi
 
     # Convert a single integer to a [least_significant, most_significant] pair of 7-bit ints
     def to_7bit(value)
-      [value & 127, value >> 7]
+      [value & 127, (value >> 7) & 127]
     end
 
     # Convert a [least_significant, most_significant] pair of 7-bit ints to a single integer     
@@ -19,6 +19,11 @@ module JSound::Midi
     # Scales a float from the range [-1.0, 1.0] to the integer range [0, 16383]
     def normalized_float_to_14bit(float)
       (MAX_14BIT_VALUE*(float+1)/2).round
+    end
+
+    # Make all methods be module functions (accessible by sending the method name to module directly)
+    instance_methods.each do |method|
+      module_function method
     end
 
   end

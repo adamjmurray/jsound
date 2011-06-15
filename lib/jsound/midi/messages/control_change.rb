@@ -1,18 +1,19 @@
 module JSound::Midi::Messages
+
   class ControlChange < Message
 
-    attr_reader :control, :value
-
-    def initialize(control, value, channel=0, java_message=nil)
-      @control = control
-      @value = value
-      @data = {:control => control, :value => value}
-      @channel = channel
-      @java_message = java_message
+    def initialize(control, value, channel=0, options={})
+      super([control,value], channel, options)
     end
 
-    def self.from_java(java_message)          
-      new(java_message.data1, java_message.data2, java_message.channel, java_message)
+    alias control data1
+    alias control= data1=
+
+    alias value data2
+    alias value= data2=
+
+    def self.from_java(java_message, options={})
+      new java_message.data1, java_message.data2, java_message.channel, options.merge({:java_message => java_message})
     end        
 
   end      

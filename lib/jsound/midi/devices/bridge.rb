@@ -13,9 +13,7 @@ module JSound::Midi::Devices
     # Receives incoming Java MIDI Messages, converts them to Ruby Messages,
     # and sends them to any connected devices.
     def send(java_message, timestamp=-1)
-      message = JSound::Midi::Messages::Message.from_java(java_message) 
-      message.source = @source_device
-      self.message message
+      self.message JSound::Midi::Messages::Message.from_java(java_message, :source => @source_device)
     rescue
       STDERR.puts $! if $DEBUG # otherwise this can get swallowed
       raise
