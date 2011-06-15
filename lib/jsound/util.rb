@@ -15,6 +15,11 @@ module JSound
     def escape(s)
       s.gsub("'","\\\\'")
     end
+
+    # Make all methods be module functions (accessible by sending the method name to module directly)
+    instance_methods.each do |method|
+      module_function method
+    end
   
   end
 end

@@ -1,14 +1,14 @@
 require 'spec_helper'
 
-module JSound::Midi
-  describe DataConversion do
+module JSound
+  describe Convert do
 
     it 'should define MAX_14BIT_VALUE as the maximum value for 14-bit integers' do
-      DataConversion::MAX_14BIT_VALUE.should == (127 + (127 << 7))
+      Convert::MAX_14BIT_VALUE.should == (127 + (127 << 7))
     end
     
-    context 'with DataConversion included' do      
-      include DataConversion
+    context 'with Convert included' do      
+      include Convert
 
       describe '#to_7bit' do
         it 'should convert positive integers to 7-bit [least_significant,most_significant]' do
@@ -59,7 +59,7 @@ module JSound::Midi
           normalized_float_to_14bit( 1.0).should == 16383
         end
         it 'should convert 1.0 to MAX_14BIT_VALUE' do
-          normalized_float_to_14bit(1.0).should == DataConversion::MAX_14BIT_VALUE
+          normalized_float_to_14bit(1.0).should == Convert::MAX_14BIT_VALUE
         end
       end
     end

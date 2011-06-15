@@ -13,11 +13,11 @@ class MessageMatcher
 end 
   
 def note_on_message(pitch)
-  msg = JSound::Midi::Messages::Builder.note_on(pitch)
+  msg = JSound::Midi::MessageBuilder.note_on(pitch)
   MessageMatcher.new(msg)
 end
 
 def note_off_message(pitch)
-  msg = JSound::Midi::Messages::Builder.note_off(pitch)
+  msg = JSound::Midi::MessageBuilder.note_off(pitch)
   MessageMatcher.new(msg)
 end

@@ -1,7 +1,7 @@
-module JSound::Midi
+module JSound
 
   # Helper methods for converting MIDI data values
-  module DataConversion
+  module Convert
 
     # The maximum value for unsigned 14-bit integer
     MAX_14BIT_VALUE = 16383  # == 127 + (127 << 7) 
