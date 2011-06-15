@@ -7,44 +7,55 @@ require 'jsound/midi/messages/pitch_bend'
 require 'jsound/midi/messages/poly_pressure'
 require 'jsound/midi/messages/program_change'
 
-require 'jsound/midi/device_list'
 require 'jsound/midi/message_builder'
 
 require 'jsound/midi/device'
-require 'jsound/midi/devices/bridge'
 require 'jsound/midi/devices/generator'
 require 'jsound/midi/devices/jdevice'
+require 'jsound/midi/devices/input_device'
+require 'jsound/midi/devices/output_device'
 require 'jsound/midi/devices/monitor'
 require 'jsound/midi/devices/recorder'
+
+require 'jsound/midi/device_list'
 
 
 module JSound
 
-  # Core interface for accessing MIDI devices
+  # Module containing all MIDI functionality.
+  #
+  # Also provies the core interface for accessing MIDI devices, see the device list constants defined here.
+  #
   module Midi
     include_package 'javax.sound.midi'
 
     # All MIDI devices
+    # @return [DeviceList]
     DEVICES = DeviceList.new
 
     # MIDI input devices
+    # @return [DeviceList] a list of {Devices::InputDevice}s
     INPUTS = DeviceList.new
 
     # MIDI output devices
+    # @return [DeviceList] a list of {Devices::OutputDevice}s
     OUTPUTS = DeviceList.new
 
     # MIDI synthesizer devices
+    # @return [DeviceList]
     SYNTHESIZERS = SYNTHS = DeviceList.new
 
     # MIDI sequencer devices
+    # @return [DeviceList]
     SEQUENCERS = DeviceList.new
 
     # Refresh the list of connected devices.
+    # @note this happens automatically when JSound is required.
     def refresh_devices
       [DEVICES,INPUTS,OUTPUTS,SYNTHESIZERS,SEQUENCERS].each{|collection| collection.clear}
       MidiSystem.getMidiDeviceInfo.each do |device_info| 
         java_device = MidiSystem.getMidiDevice(device_info)
-        device = Devices::JDevice.new(java_device)
+        device = Devices::JDevice.from_java(java_device)
         case device.type
         when :sequencer   then SEQUENCERS   << device
         when :synthesizer then SYNTHESIZERS << device

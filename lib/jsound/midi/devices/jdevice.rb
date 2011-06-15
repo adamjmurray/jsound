@@ -4,7 +4,6 @@ module JSound
 
       # A Java-provided MIDI device (wraps javax.sound.midi.MidiDevice objects)
       class JDevice < Device
-        include_package 'javax.sound.midi'
         include JSound::Util
 
         # the javax.sound.midi.MidiDevice.Info object for this java device
@@ -13,6 +12,8 @@ module JSound
         # the description of this device
         # @return [String]
         attr_reader :description
+
+        attr_reader :type
 
         def self.open_devices
           @@open_devices ||= []
@@ -24,76 +25,56 @@ module JSound
           end
         end
 
-        def initialize(device)
-          @device = device
-          @info = @device.deviceInfo
+        def initialize(java_device, type)
+          @java_device = java_device
+          @info = @java_device.deviceInfo
           @description = @info.description
+          @type = type
+        end
 
-          # set the type:
-          case device
-          when Sequencer then @type = :sequencer
-          when Synthesizer then @type = :synthesizer
+        def self.from_java(java_device)
+          case java_device
+          when javax.sound.midi.Sequencer then type = :sequencer
+          when javax.sound.midi.Synthesizer then type = :synthesizer
           else
             # This assumes a single device cannot be both an input and an output:
-            if device.maxTransmitters != 0
-              @type = :input
-            elsif device.maxReceivers != 0
-              @type = :output
+            if java_device.maxTransmitters != 0
+              return InputDevice.new(java_device)
+            elsif java_device.maxReceivers != 0
+              return OutputDevice.new(java_device)
             else
-              @type = :unknown
+              type = :unknown
             end
           end
-
-          case @type
-          when :input
-            @bridge = Bridge.new(self)
-            @device.transmitter.receiver = @bridge
-          when :output
-            @receiver = @device.receiver
-          end
+          new java_device, type
         end
 
         def open
-          unless @device.open?
+          unless @java_device.open?
             puts "Opening #{to_s}"
-            @device.open
-            JDevice.open_devices << self
+            @java_device.open
+            self.class.open_devices << self
           end
         end
 
         def close
-          if @device.open?
+          if @java_device.open?
             puts "Closing #{to_s}"
-            @device.close
-            JDevice.open_devices.delete(self)
+            @java_device.close
+            self.class.open_devices.delete(self)
           end
         end
 
         def method_missing(sym, *args, &block)
-          if @device.respond_to? sym
-            @device.send(sym, *args, &block)
+          if @java_device.respond_to? sym
+            @java_device.send(sym, *args, &block)
           else
             @info.send(sym, *args, &block)
           end
         end
 
         def respond_to?(sym)
-          super or @device.respond_to? sym or info.respond_to? sym
-        end
-
-        def >>(device)
-          super
-          @bridge >> device if @bridge
-          # else ??? For outputs I guess this should be an error
-        end
-
-        def message(message)
-          # unwrap the ruby message wrapper, if needed:
-          message = message.java_message if message.respond_to? :java_message
-
-          # Use java_send to call Receiver.send() since it conflicts with Ruby's built-in send method
-          # -1 means no timestamp, so we're not supporting timestamps
-          @receiver.java_send(:send, [MidiMessage, Java::long], message, -1) if @receiver
+          super or @java_device.respond_to? sym or info.respond_to? sym
         end
 
         def [](field)
@@ -107,16 +88,16 @@ module JSound
         def inspect
           to_s
         end
-
-        def to_json(indent='')
-          fields = []
-          fields << "#{indent}  type: '#{type}'"
-          fields << "#{indent}  description: '#{escape info.description}'" if info.description !~ unknown?
-          fields << "#{indent}  name: '#{escape info.name}'" if info.name !~ unknown?
-          fields << "#{indent}  vendor: '#{escape info.vendor}'" if info.vendor !~ unknown?
-          fields << "#{indent}  version: '#{escape info.version}'" if info.version !~ unknown?
-          "#{indent}{\n" + fields.join(",\n") + "\n#{indent}}"
-        end
+#
+#        def to_json(indent='')
+#          fields = []
+#          fields << "#{indent}  type: '#{type}'"
+#          fields << "#{indent}  description: '#{escape info.description}'" if info.description !~ unknown?
+#          fields << "#{indent}  name: '#{escape info.name}'" if info.name !~ unknown?
+#          fields << "#{indent}  vendor: '#{escape info.vendor}'" if info.vendor !~ unknown?
+#          fields << "#{indent}  version: '#{escape info.version}'" if info.version !~ unknown?
+#          "#{indent}{\n" + fields.join(",\n") + "\n#{indent}}"
+#        end
 
       end
 

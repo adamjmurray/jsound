@@ -29,11 +29,15 @@ module JSound
         @receiver
       end
 
-      # connect this device's output to a MIDI message receiver
+      # assign an output for this device
       def receiver=(receiver)
         @receiver = receiver
       end
-      alias :>> :receiver=
+
+      # assign an output for this device. shortcut for #{receiver=}
+      def >> receiver
+        self.receiver= receiver
+      end
 
       # send a message to this device
       def message(message)
@@ -41,7 +45,7 @@ module JSound
         @receiver.message message if @receiver
       end
 
-      # send a message to this device. shortcut for #message
+      # send a message to this device. shortcut for {#message}
       def <=(message)
         message(message)
       end
