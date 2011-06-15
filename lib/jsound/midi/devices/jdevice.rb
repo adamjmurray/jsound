@@ -4,7 +4,6 @@ module JSound
 
       # A Java-provided MIDI device (wraps javax.sound.midi.MidiDevice objects)
       class JDevice < Device
-        include JSound::Util
 
         # the javax.sound.midi.MidiDevice.Info object for this java device
         attr_reader :info
@@ -88,16 +87,6 @@ module JSound
         def inspect
           to_s
         end
-#
-#        def to_json(indent='')
-#          fields = []
-#          fields << "#{indent}  type: '#{type}'"
-#          fields << "#{indent}  description: '#{escape info.description}'" if info.description !~ unknown?
-#          fields << "#{indent}  name: '#{escape info.name}'" if info.name !~ unknown?
-#          fields << "#{indent}  vendor: '#{escape info.vendor}'" if info.vendor !~ unknown?
-#          fields << "#{indent}  version: '#{escape info.version}'" if info.version !~ unknown?
-#          "#{indent}{\n" + fields.join(",\n") + "\n#{indent}}"
-#        end
 
       end
 

@@ -4,25 +4,12 @@ module JSound
     # A collection of MIDI {Device}s that provides various methods to lookup (and optionally auto-open) specific devices
     #
     class DeviceList
-      include JSound::Util
 
       # The devices within this collection.
       attr_reader :devices
 
       def initialize(list=[])
         @devices = list
-      end
-
-      # List all attribute values for the given attribute
-      #
-      def list_all(attribute=:description)
-        @devices.collect{|device| device[attribute]}
-      end
-
-      # List attribute values for the given attribute, omitting any unknown values
-      #
-      def list(attribute=:description)
-        list_all(attribute).delete_if{|value| value =~ unknown? }
       end
 
       # Find the first {Device} matching the criteria
@@ -118,10 +105,7 @@ module JSound
         @devices.join("\n")
       end
 
-      def to_json(indent='')
-        "[\n" + @devices.map{|device| device.to_json(indent+'  ') }.join(",\n") + "\n]"
-      end
-
+      ########################
       private
 
       def search(iterator, criteria)
