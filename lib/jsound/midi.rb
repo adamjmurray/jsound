@@ -16,6 +16,7 @@ require 'jsound/midi/devices/input_device'
 require 'jsound/midi/devices/output_device'
 require 'jsound/midi/devices/monitor'
 require 'jsound/midi/devices/recorder'
+require 'jsound/midi/devices/repeater'
 
 require 'jsound/midi/device_list'
 
