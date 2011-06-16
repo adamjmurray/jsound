@@ -2,39 +2,51 @@ module JSound
   module Midi
     module Devices
 
-      # A Device that records incoming messages
+      # A Device that records incoming messages, and the timestamp at which they were received.
       class Recorder < Device
 
-        # The recorded messages
-        attr_reader :messages
+        # The recorded [message,timestamp] pairs
+        attr_reader :messages_with_timestamps
 
-        def initialize()
+        # The recorded messages without timestamps
+        def messages
+          @messages_with_timestamps.map{|m,t| m }
+        end
+
+        def initialize(autostart=true)
           clear
-          stop
+          if autostart
+            start
+          else
+            stop
+          end
         end
 
         # clear any recorded messages
         def clear
-          @messages = []
+          @messages_with_timestamps = []
         end
 
         # start recording
-        def start
+        def open
           @recording = true
         end
+        alias start open
 
         # stop recording
-        def stop
+        def close
           @recording = false
         end
+        alias stop close
 
         # true if this object is currently recording
-        def recording?
+        def open?
           @recording
         end
+        alias recording? open?
 
         def message(message)
-          @messages << message if recording?
+          @messages_with_timestamps << [message, Time.now.to_i] if recording?
         end
 
       end
