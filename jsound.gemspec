@@ -1,6 +1,7 @@
 Gem::Specification.new do |gem|
   gem.name        = 'jsound'
-  gem.version     = '0.0.1'
+  gem.version     = '0.1.0'
+  gem.platform    = 'java'
 
   gem.summary     = 'Ruby wrapper for the Java sound API'
   gem.author      = 'Adam Murray'
