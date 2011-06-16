@@ -14,9 +14,11 @@ module JSound
         #
         def initialize(java_device)
           super(java_device, :output)
-          self >> java_device.receiver
         end
 
+        def output= device
+          raise "#{self.class} cannot be assigned an output"
+        end
 
         def message(message)
           # unwrap the ruby message wrapper, if needed:
@@ -24,7 +26,7 @@ module JSound
 
           # Use java_send to call Receiver.send() since it conflicts with Ruby's built-in send method
           # -1 means no timestamp, so we're not supporting timestamps
-          @receiver.java_send(:send, [javax.sound.midi.MidiMessage, Java::long], message, -1) if @receiver
+          @java_device.receiver.java_send(:send, [javax.sound.midi.MidiMessage, Java::long], message, -1)
         end
 
       end

@@ -6,7 +6,9 @@ module JSound
     class Device
       include JSound::Mixins::TypeFromClassName
 
-      # open the device and allocate the needed resources so that it can send and receive messages
+      # Open the device and allocate the needed resources so that it can send and receive messages
+      # @note this operation is typically only relevant for Java-based devices such as {Devices::InputDevice} and {Devices::OutputDevice}
+      # @see DeviceList#open
       def open
       end
 
@@ -16,7 +18,8 @@ module JSound
         true
       end
 
-      # close the device and free up any resources used by this device
+      # Close the device and free up any resources used by this device.
+      # @note this operation is typically only relevant for Java-based devices such as {Devices::InputDevice} and {Devices::OutputDevice}
       def close
       end
 
@@ -25,27 +28,36 @@ module JSound
         @type ||= (self.class == Device ? :pass_through : self.class.type)
       end
 
-      def receiver
-        @receiver
+      # the device connected to this device's output
+      # @return [Device] the connected device, or nil if nothing is connected
+      def output
+        @output
       end
 
-      # assign an output for this device
-      def receiver=(receiver)
-        @receiver = receiver
+      # connect a device as the output for this device
+      # @param [Device] the device to connect, or nil to disconnect the currently connected device
+      # @see {#>>}
+      def output= device
+        @output = device
       end
 
-      # assign an output for this device. shortcut for #{receiver=}
-      def >> receiver
-        self.receiver= receiver
+      # Connect a device as the output for this device. shortcut for {#output=}
+      # @param [Device] the device to connect, or nil to disconnect the currently connected device
+      # @see {#output=}
+      def >> device
+        self.output= device
       end
 
-      # send a message to this device
+      # Send a message to this device
+      # @param [Message]
+      # @see #<=
       def message(message)
-        # default behavior is to pass the message to any connected receiver
-        @receiver.message message if @receiver
+        # default behavior is to pass the message to any connected output
+        @output.message(message) if @output
       end
 
       # send a message to this device. shortcut for {#message}
+      # @see #message
       def <=(message)
         message(message)
       end

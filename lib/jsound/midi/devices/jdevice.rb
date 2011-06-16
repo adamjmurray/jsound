@@ -14,6 +14,8 @@ module JSound
 
         attr_reader :type
 
+        # All open JDevices
+        # @note All open devices will be automatically closed at_exit
         def self.open_devices
           @@open_devices ||= []
         end
@@ -48,6 +50,8 @@ module JSound
           new java_device, type
         end
 
+        # @see Device#open
+        # @note All open devices will be automatically closed at_exit
         def open
           unless @java_device.open?
             puts "Opening #{to_s}"
@@ -56,6 +60,7 @@ module JSound
           end
         end
 
+        # @see Device#close
         def close
           if @java_device.open?
             puts "Closing #{to_s}"

@@ -19,9 +19,9 @@ module JSound
           java_device.transmitter.receiver = @bridge
         end
 
-        def receiver=(device)
+        def output=(device)
           super
-          @bridge.receiver= device
+          @bridge.output= device
         end
 
         # A subcomponent of {InputDevice} that implements javax.sound.midi.Receiver

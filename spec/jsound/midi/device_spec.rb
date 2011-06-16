@@ -4,7 +4,7 @@ module JSound::Midi
 
   describe Device do
     let(:device)   { Device.new }
-    let(:receiver) { mock('device') }
+    let(:output) { mock('device') }
 
     describe '#open' do
       it "does nothing" do
@@ -32,42 +32,42 @@ module JSound::Midi
       end
     end
 
-    describe '#receiver' do
-      it "is the receiver of this device's messages" do
-        device.receiver = receiver
-        device.receiver.should == receiver
+    describe '#output' do
+      it "is the output of this device's messages" do
+        device.output = output
+        device.output.should == output
       end
     end
 
     describe '#>>' do
-      it 'should connect to a receiver' do
-        device >> receiver
-        device.receiver.should == receiver
+      it 'should connect to a output' do
+        device >> output
+        device.output.should == output
       end
     end
 
     describe '#message' do
-      it 'should send messages to the connected receiver' do
-        device >> receiver
-        receiver.should_receive(:message).with('the_message')
+      it 'should send messages to the connected output' do
+        device >> output
+        output.should_receive(:message).with('the_message')
         device.message 'the_message'
       end
     end
 
     describe '#<=' do
       it 'should behave like #send_message' do
-        device >> receiver
-        receiver.should_receive(:message).with('the_message')
+        device >> output
+        output.should_receive(:message).with('the_message')
         device <= 'the_message'
       end
     end
 
     it 'should pass through messages by default' do
       pass_through = Device.new
-      device >> pass_through >> receiver 
-      device.receiver.should == pass_through
-      pass_through.receiver.should == receiver   
-      receiver.should_receive(:message).with('message')
+      device >> pass_through >> output 
+      device.output.should == pass_through
+      pass_through.output.should == output   
+      output.should_receive(:message).with('message')
       device <= 'message'      
     end
 

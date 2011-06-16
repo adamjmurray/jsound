@@ -3,6 +3,8 @@ module JSound
 
     # A collection of MIDI {Device}s that provides various methods to lookup (and optionally auto-open) specific devices
     #
+    # @see Midi the Midi module for constants to access your system devices
+    #
     class DeviceList
 
       # The devices within this collection.
