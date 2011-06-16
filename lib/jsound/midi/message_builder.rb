@@ -23,6 +23,10 @@ module JSound
         Messages::ControlChange.new(control, value, channel)
       end
 
+      def all_notes_off(channel=0)
+        control_change(123, 0, channel)
+      end
+
       def channel_pressure(pressure, channel=0)
         Messages::ChannelPressure.new(pressure, channel)
       end
