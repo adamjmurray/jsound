@@ -16,6 +16,10 @@ module JSound
           new java_message.data1, java_message.channel, options.merge({:java_message => java_message})
         end
 
+        def clone
+          self.class.new(program,@channel)
+        end
+
       end
 
     end

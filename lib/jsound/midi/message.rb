@@ -22,7 +22,7 @@ module JSound
       # @return [Symbol]
       attr_reader :type
 
-      def initialize(data, channel, options={})
+      def initialize(data, channel=0, options={})
         @data = data
         @channel = channel
 
@@ -153,6 +153,10 @@ module JSound
 
       def to_s
         "#{type}(#{channel}): #{value.inspect}"
+      end
+
+      def clone
+        self.class.new(@data, @channel, {:type => @type})
       end
 
     end
