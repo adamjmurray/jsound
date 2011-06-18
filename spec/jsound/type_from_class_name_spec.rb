@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module JSound::Mixins
+module JSound
   describe TypeFromClassName do
 
     context "including_class#type" do      

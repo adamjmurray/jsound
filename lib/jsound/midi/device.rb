@@ -4,7 +4,7 @@ module JSound
     # A device that can transmit and/or receive messages (typically MIDI messages).
     # This default implementation simply passes through all messages.
     class Device
-      include JSound::Mixins::TypeFromClassName
+      include JSound::TypeFromClassName
 
       # Open the device and allocate the needed resources so that it can send and receive messages
       # @note this operation is typically only relevant for Java-based devices such as {Devices::InputDevice} and {Devices::OutputDevice}

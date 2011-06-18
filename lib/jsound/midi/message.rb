@@ -6,7 +6,7 @@ module JSound
     # See http://www.midi.org/techspecs/midimessages.php
     # for info on how the MIDI spec defines these messages.
     class Message
-      include JSound::Mixins::TypeFromClassName
+      include JSound::TypeFromClassName
 
       # The MIDI input {Device} which received this message.
       attr_reader :source

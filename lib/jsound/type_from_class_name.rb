@@ -1,4 +1,4 @@
-module JSound::Mixins
+module JSound
 
   # Provides a default implementation of .type for the Class, based on the class name.
   module TypeFromClassName
