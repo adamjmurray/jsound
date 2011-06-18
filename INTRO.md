@@ -116,7 +116,7 @@ Notes
 
 ### Opening Devices ###
 
-Input and output devices will not function until they are opened via {JSound/Midi/Device#open}.
+Input and output devices will not function until they are opened via {JSound::Midi::Device#open}.
 If an input or output device does not appear to be working, you probably forgot to open it.
 
 Some of the {JSound::Midi::DeviceList} methods will automatically open the device for you.

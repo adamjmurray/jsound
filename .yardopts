@@ -2,4 +2,4 @@
 --title "JSound: a Ruby wrapper for Java's sound API"
 lib/**/*.rb
 - INTRO.md
-- examples/*
+- examples/*.rb
