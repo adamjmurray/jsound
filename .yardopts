@@ -1,3 +1,5 @@
---readme README.md
+--readme INTRO.md
 --title "JSound: a Ruby wrapper for Java's sound API"
 lib/**/*.rb
+- INTRO.md
+- examples/*

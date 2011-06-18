@@ -1,8 +1,9 @@
 JSound: a Ruby wrapper for the Java sound API
 =============================================
 
-This library requires [JRuby](http://jruby.org)
-and currently only supports the [MIDI API](http://java.sun.com/j2se/1.5.0/docs/api/javax/sound/midi/package-summary.html)
+JSound provides cross-platform [MIDI](http://en.wikipedia.org/wiki/Musical_Instrument_Digital_Interface) support for Ruby.
+
+This library requires [JRuby](http://jruby.org).
 
 
 
@@ -13,63 +14,23 @@ Home:     http://github.com/adamjmurray/jsound
 
 Author:   Adam Murray (adam@compusition.com)
 
-License:  Distributed under a permissive BSD-style license, see LICENSE.txt
+License:  Distributed under a permissive BSD-style license, [see LICENSE.txt](LICENSE.txt)
 
 
 
 Getting started
 ---------------
 
-0. Install JRuby 1.5 or 1.6, either:
-   - via manual installation
-      - Download and unpack the [current binary version of JRuby](http://jruby.org/download)
-      - Put the JRuby bin folder on your PATH
-   - or via [rvm](https://rvm.beginrescueend.com/) (adjust version number as desired):
-
-             rvm install jruby-1.6.2
-             rvm use jruby-1.6.2
-
-0. Install JSound
-
-         jgem install jsound
-
-0. Try the examples (monitor.rb prints any input it receives, try playing a MIDI keyboard):
-
-         jruby examples/list_devices.rb
-         jruby examples/monitor.rb
-     
-0. Take a look at the comments in examples/notes.rb for info on:
-   - routing MIDI inputs to MIDI outputs
-   - generating MIDI events and sending them to an output
+See [the documentation's introduction](INTRO.md).
 
 
 
 Documentation
 -------------
 
-Gem: http://rubydoc.info/gems/jsound/0.0.1/frames
+Gem: http://rubydoc.info/gems/jsound/0.1.1/frames
 
 Latest for source: http://rubydoc.info/github/adamjmurray/jsound/master/frames
-
-
-Notes
------
-
-### OS X ###
-
-By enabling the IAC (inter-application communication) driver, you can easily interface with any MIDI-enabled application:
-
-0. Run to /Applications/Utilities/Audio MIDI Setup
-
-0. In the menu, select: Window &rarr; Show MIDI Window
-
-0. Double click IAC Driver
-
-0. Check the box where it says "Device is online"
-
-Now JSound should be able to locate an "IAC Driver" input and output device.
-
-You can also add additional MIDI ports here, to work with multiple applications simultaneously.
 
 
 
@@ -90,7 +51,22 @@ and to quickly check compatibility with multiple JRuby versions via rvm:
      yard
      open doc/frames.html
 
+or, to automatically refresh the documentation as you work:
+
+      yard server -r
+      open http://localhost:8808
+
 
 ### Project Roadmap ###
 
 https://www.pivotaltracker.com/projects/85719
+
+
+Changelog
+---------
+
+* June 18, 2011, version 0.1.1
+    - added a "Hash of mappings" feature to Transformer, for easy implementation of simple transformation patterns
+    - improved examples
+    - got rid of the Repeater device and built its functionality into the base Device
+    - added #output= and #>> to DeviceList, to construct parallel paths in device graphs

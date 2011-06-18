@@ -1,13 +1,19 @@
-Gem::Specification.new do |gem|
-  gem.name        = 'jsound'
-  gem.version     = '0.1.0'
-  gem.platform    = 'java'
+Gem::Specification.new do |spec|
+  spec.name        = 'jsound'
+  spec.version     = '0.1.1'
 
-  gem.summary     = 'Ruby wrapper for the Java sound API'
-  gem.author      = 'Adam Murray'
-  gem.email       = 'adam@compusition.com'
-  gem.homepage    = 'http://github.com/adamjmurray/jsound'
+  spec.summary     = 'Ruby wrapper for the Java sound API'
+  spec.description = "A Ruby interface for Java's javax.sound API. Runs on the JVM via JRuby."
 
-  gem.files = Dir['Rakefile', 'README.md', 'LICENSE.txt', '.yardopts',
-                  'lib/**/*', 'spec/**/*', 'examples/**/*']
+  spec.author      = 'Adam Murray'
+  spec.email       = 'adam@compusition.com'
+  spec.homepage    = 'http://github.com/adamjmurray/jsound'
+  spec.license     = 'BSD'
+
+  spec.files = Dir['*.md', '*.txt', 'Rakefile', '.yardopts',
+                   'lib/**/*', 'spec/**/*', 'examples/**/*']
+
+  spec.platform    = 'java'
+  spec.requirements << "JRuby 1.5+"
+  spec.post_install_message = "NOTE: this gem requires JRuby 1.5+"
 end
