@@ -14,11 +14,9 @@ output = ARGV[1] ? Midi::OUTPUTS/ ARGV[1] : Midi::OUTPUTS.open_first
 
 transposer = Midi::Devices::Transformer.new :pitch => lambda{|p| p + 3 }  # transpose up a minor third
 
-repeater = Midi::Devices::Repeater.new
-
-input >> repeater >> [transposer, transposer >> output]
+input >> [transposer, transposer >> output]
 # this is a shortcut for these 2 statements:
-# input >> repeater >> [transposer, output]
+# input >> [transposer, output]
 # transposer >> output
 
 sleep 5 while true # force script to keep running

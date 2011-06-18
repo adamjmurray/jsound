@@ -3,7 +3,7 @@ module JSound
     module Devices
 
       # A device which provides methods for generating MIDI command messages.
-      # See JSound::Midi::Messages::Builder for the available methods.
+      # @see JSound::Midi::MessageBuilder
       class Generator < Device
 
         # For all the methods defined in the MessageBuilder module (note_on, pitch_bend, control_change, etc),

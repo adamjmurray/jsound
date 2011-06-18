@@ -40,11 +40,11 @@ module JSound
               if message.is_a? Enumerable
                 message.each{|m| @output.message(m) }
               else
-                @output.message(message) if message
+                super(message) if message
               end
 
-            elsif @clone or !@transforms.empty?
-              @output.message(message)
+            elsif @clone or !@mappings.empty?
+              super(message)
             end
           end
         end

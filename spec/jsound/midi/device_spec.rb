@@ -52,10 +52,21 @@ module JSound::Midi
         output.should_receive(:message).with('the_message')
         device.message 'the_message'
       end
+
+      it "should pass send the messages to all connected outputs" do
+        output1 = mock "device1"
+        output2 = mock "device2"
+        device >> [output1, output2]
+
+        output1.should_receive(:message).once.with :the_message
+        output2.should_receive(:message).once.with :the_message
+        device.message :the_message
+      end
+
     end
 
     describe '#<=' do
-      it 'should behave like #send_message' do
+      it 'should behave like #message' do
         device >> output
         output.should_receive(:message).with('the_message')
         device <= 'the_message'

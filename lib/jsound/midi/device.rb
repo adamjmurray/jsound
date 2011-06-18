@@ -48,12 +48,17 @@ module JSound
         self.output= device
       end
 
-      # Send a message to this device
+      # Send a message to this device and pass it through to any output(s)
       # @param [Message]
       # @see #<=
       def message(message)
-        # default behavior is to pass the message to any connected output
-        @output.message(message) if @output
+        if @output.is_a? Enumerable
+          for device in @output
+            device.message(message)
+          end
+        elsif @output
+          @output.message(message)
+        end
       end
 
       # send a message to this device. shortcut for {#message}
