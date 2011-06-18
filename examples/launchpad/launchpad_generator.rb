@@ -1,37 +1,11 @@
-# A device for controlling a Novation Launchpad
-# To try this example, do this from the top-level project source folder
-=begin
+#
+# EXAMPLE: A device for controlling a Novation Launchpad
+#
+require 'rubygems'
+require 'jsound'
+include JSound
 
-  jirb -I lib
-  require 'jsound'
-  require 'examples/launchpad/launchpad_generator.rb'
-  include JSound::Midi
-  lp = OUTPUTS.Launchpad
-  g = LaunchpadGenerator.new
-  g >> lp
-
-  g.all_off
-    
-  # Make the top left grid button green:
-  g.grid(0,0,:green)
-  
-  # Make the mixer button red:
-  g.mixer(:red)
-  
-  # Make the second 'scene launch' (rightmost column of buttons) orange:
-  g.scene_launch(2,:orange)
-  
-  # and we can also do yellow:
-  g.grid(1,1,:yellow)
-  
-  # and arbitrary mixtures of green and red LEDs (brightness levels for each range from 0-3)
-  g.grid(2,2,[1,1])
-    
-  at_exit { g.all_off } # this will turn everything off when you exit irb
-  
-=end
-
-class LaunchpadGenerator < JSound::Midi::Devices::Generator
+class LaunchpadGenerator < Midi::Devices::Generator
   
   def grid(x,y,color=3)
     x = clip(x,0,15)
@@ -107,5 +81,33 @@ class LaunchpadGenerator < JSound::Midi::Devices::Generator
     r = clip(r.to_i,0,3)
     return 16*g + r
   end
-  
+
 end
+
+
+gen = LaunchpadGenerator.new
+gen >> Midi::OUTPUTS.Launchpad
+
+# clear all the lights at the start of the script
+gen.all_off
+# ... and at the end
+at_exit { gen.all_off }
+
+8.times do |y|
+  8.times do |x|
+    gen.grid x, y, :green
+    sleep 0.02
+  end
+end
+
+8.times do |n|
+  gen.control_row n, :amber
+  gen.scene_launch n, :red
+  sleep 0.2
+end
+
+
+# Other things to try:
+# g.mixer(:red) # make the mixer button red
+# g.grid(2,2,[1,1]) # arbitrary mixture of green and red LEDs (brightness levels for each range from 0-3)
+

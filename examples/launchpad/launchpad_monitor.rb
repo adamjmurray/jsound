@@ -1,16 +1,14 @@
-#!/usr/bin/env jruby --debug
+#
+# EXAMPLE: monitoring Novation Launchpad input using custom Messages
+#
+# Note: I have to hit a button on the top row of my Launchpad before I can receive any input.
+#
 require 'rubygems'
 require 'jsound'
-include JSound::Midi
-
-# A quick prototype of monitoring input from a Novation Launchpad, 
-# after translating it to something more meaningful than the raw MIDI messages.
-
-# Note: I have to hit a button on the top row of my Launchpad before I can receive any input.
-
+include JSound
 
 # A higher-level representation of the messages coming from the Launchpad
-class LaunchpadMessage < Messages::Message
+class LaunchpadMessage < Midi::Message
   def initialize(button_group, position, pressed, channel=0, source=nil)
     @type = :launchpad_button
     @button_group = button_group
@@ -23,8 +21,8 @@ class LaunchpadMessage < Messages::Message
 end
 
 # A device that converts the lower-level MIDI messages into LaunchpadMessages
-class LaunchadTranslator < Devices::Device  
-  def <=(message)
+class LaunchadTranslator < Midi::Device
+  def message(message)
     case message.type    
 
     when :control_change
@@ -53,13 +51,8 @@ class LaunchadTranslator < Devices::Device
   end  
 end
 
-
-# And now that those classes are defined, 
+# And now that those classes are defined,
 # just hook up the Launchpad to a monitor, with the translator in between:
-INPUTS.Launchpad >> LaunchadTranslator.new >> Devices::Monitor.new
+Midi::INPUTS.Launchpad >> LaunchadTranslator.new >> Midi::Devices::Monitor.new
 
-
-# force the script to keep running (MIDI devices run in a background thread)
-while(true)
-  sleep 5
-end
+sleep 5 while true # force script to keep running
