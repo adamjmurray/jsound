@@ -21,7 +21,7 @@ License:  Distributed under a permissive BSD-style license, [see LICENSE.txt](LI
 Getting started
 ---------------
 
-See [the documentation's introduction](INTRO.md).
+See [the documentation's introduction](blob/master/INTRO.md).
 
 
 
