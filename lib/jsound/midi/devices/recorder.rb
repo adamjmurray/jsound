@@ -45,6 +45,10 @@ module JSound
         end
         alias recording? open?
 
+        def output= device
+          raise "#{self.class} cannot be assigned an output"
+        end
+
         def message(message)
           @messages_with_timestamps << [message, Time.now.to_i] if recording?
         end

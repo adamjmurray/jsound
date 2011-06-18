@@ -84,5 +84,17 @@ module JSound::Midi::Devices
       end
     end
 
+    describe "#output=" do
+      it "should raise an error, since outputs cannot have outputs assigned" do
+        lambda{ recorder.output = Device.new }.should raise_error
+      end
+    end
+
+    describe "#>>" do
+      it "should raise an error, since outputs cannot have outputs assigned" do
+        lambda{ device >> Device.new }.should raise_error
+      end
+    end
+
   end
 end
