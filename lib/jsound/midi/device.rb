@@ -52,7 +52,7 @@ module JSound
       # @param [Message]
       # @see #<=
       def message(message)
-        if @output.is_a? Enumerable
+        if @output.respond_to? :each
           for device in @output
             device.message(message)
           end

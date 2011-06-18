@@ -20,6 +20,14 @@ module JSound::Midi
       end
     end
 
+    describe "#each" do
+      it "yields each device" do
+        yielded = []
+        device_list.each{|device| yielded << device }
+        yielded.should == devices
+      end
+    end
+
     describe "#open" do
       it "acts like #find and also opens the device" do
         device2.should_receive :open
@@ -40,6 +48,26 @@ module JSound::Midi
       it "is case insensitive" do
         device1.should_receive(:open)
         (device_list/'mock').should == device1
+      end
+    end
+
+    describe "#output=" do
+      it "passes the argument to each device#open" do
+        output = mock "output"
+        device1.should_receive(:output=).with output
+        device2.should_receive(:output=).with output
+        device3.should_receive(:output=).with output
+        device_list.output = output
+      end
+    end
+
+    describe "#>>=" do
+      it "acts like #output=" do
+        output = mock "output"
+        device1.should_receive(:output=).with output
+        device2.should_receive(:output=).with output
+        device3.should_receive(:output=).with output
+        device_list >> output
       end
     end
 

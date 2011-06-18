@@ -14,6 +14,12 @@ module JSound
         @devices = list
       end
 
+      def each
+        for device in devices
+          yield device
+        end
+      end
+
       # Find the first {Device} matching the criteria
       #
       # @param criteria  matches description against for a Regexp argument, matches the device field against the value for a Hash argument, otherwise checks for an equal description
@@ -103,6 +109,14 @@ module JSound
         open @devices.first
       end
 
+      # Connect the output to all devices in this device list
+      def output= output
+        for device in devices
+          device.output = output
+        end
+      end
+      alias :>> :output=
+
       def to_s
         @devices.join("\n")
       end
@@ -152,6 +166,11 @@ module JSound
       end
 
     end
+
+    def DeviceList(*devices)
+      DeviceList.new(devices)
+    end
+    module_function :DeviceList
 
   end
 end
