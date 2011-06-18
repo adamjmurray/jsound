@@ -28,7 +28,7 @@ See [the documentation's introduction](INTRO.md).
 Documentation
 -------------
 
-Gem: http://rubydoc.info/gems/jsound/0.1.1/frames
+Gem: http://rubydoc.info/gems/jsound/0.1.2/frames
 
 Latest for source: http://rubydoc.info/github/adamjmurray/jsound/master/frames
 
@@ -65,8 +65,11 @@ https://www.pivotaltracker.com/projects/85719
 Changelog
 ---------
 
-* June 18, 2011, version 0.1.1
+* June 18, 2011, version 0.1.2
     - added a "Hash of mappings" feature to Transformer, for easy implementation of simple transformation patterns
     - improved examples
     - got rid of the Repeater device and built its functionality into the base Device
     - added #output= and #>> to DeviceList, to construct parallel paths in device graphs
+
+* June 16, 2011, version 0.1.0
+    - first stable release

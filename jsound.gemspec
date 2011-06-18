@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'jsound'
-  spec.version     = '0.1.1'
+  spec.version     = '0.1.2'
 
   spec.summary     = 'Ruby wrapper for the Java sound API'
   spec.description = "A Ruby interface for Java's javax.sound API. Runs on the JVM via JRuby."
