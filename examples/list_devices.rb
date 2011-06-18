@@ -1,6 +1,7 @@
-#!/usr/bin/env jruby
+#
+# EXAMPLE: list all available devices
+#
 require 'rubygems'
 require 'jsound'
-include JSound::Midi
 
-puts DEVICES
+puts JSound::Midi::DEVICES
