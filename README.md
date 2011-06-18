@@ -14,7 +14,7 @@ Home:     http://github.com/adamjmurray/jsound
 
 Author:   Adam Murray (adam@compusition.com)
 
-License:  Distributed under a permissive BSD-style license, [see LICENSE.txt](LICENSE.txt)
+License:  Distributed under a permissive BSD-style license, see LICENSE.txt
 
 
 
