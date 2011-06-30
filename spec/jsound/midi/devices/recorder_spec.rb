@@ -38,12 +38,22 @@ module JSound::Midi::Devices
     describe '#messages_with_timestamps' do
       it 'should return all recorded [message,timestamp] pairs in an Array' do
         recorder.start
-        time = Time.now.to_i
+        start_time = Time.now.to_f
         recorder <= :one
         recorder <= 2
         recorder <= 'three'
-        # assuming this test all happens within a small fraction of a second:
-        recorder.messages_with_timestamps.should == [[:one,time], [2,time], ['three',time]]
+        mwt = recorder.messages_with_timestamps
+
+        message1, time1 = *mwt[0]
+        message2, time2 = *mwt[1]
+        message3, time3 = *mwt[2]
+        [message1, message2, message3].should == [:one, 2, 'three']
+        time1.should be_a Float
+        time1.should be_within(0.01).of start_time
+        time2.should be_within(0.015).of start_time
+        time3.should be_within(0.02).of start_time
+        time1.should <= time2
+        time2.should <= time3
       end
     end
 

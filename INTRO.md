@@ -7,7 +7,7 @@ Java's cross-platform standard library includes a
 [sound API for MIDI and sampled sound](http://download.oracle.com/javase/tutorial/sound/index.html).
 JSound builds on this API and provides a Ruby interface via [JRuby](http://jruby.org).
 
-For now, JSound is focusd on use of the [javax.sound.midi API](http://download.oracle.com/javase/7/docs/api/javax/sound/midi/package-summary.html)
+For now, JSound is focused on use of the [javax.sound.midi API](http://download.oracle.com/javase/7/docs/api/javax/sound/midi/package-summary.html)
 in Ruby scripts and applications.
 Support for the [javax.sound.samples API](http://download.oracle.com/javase/7/docs/api/javax/sound/sampled/package-summary.html)
 may arrive in the future.
@@ -123,6 +123,15 @@ Some of the {JSound::Midi::DeviceList} methods will automatically open the devic
 The {JSound::Midi::DeviceList#method_missing} behavior for DeviceList provides a convenient way to
 find and automatically open devices.
 
+<br>
+### Known Issues ###
+
+See http://github.com/adamjmurray/jsound/wiki/Known-Issues for the most up-to-date list of known issues.
+
+<br>
+### Feature Requests and Bug Reports ###
+
+https://github.com/adamjmurray/jsound/issues (requires a github account)
 
 <br>
 ### OS X ###

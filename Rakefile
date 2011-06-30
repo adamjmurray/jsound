@@ -16,4 +16,9 @@ namespace :spec do
   RSpec::Core::RakeTask.new(:fast) do |spec|
     spec.rspec_opts = ["--color", "--fail-fast"]
   end
+
+  desc "Run RSpecs tests on mutiple versions of JRuby: JRuby 1.5.6, and JRuby 1.6.2"
+  task :xversion do
+    fail unless system("rvm jruby-1.5.6,jruby-1.6.2 rake -f #{__FILE__} spec:fast")
+  end
 end

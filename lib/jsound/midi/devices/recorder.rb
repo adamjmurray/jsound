@@ -5,7 +5,9 @@ module JSound
       # A Device that records incoming messages, and the timestamp at which they were received.
       class Recorder < Device
 
-        # The recorded [message,timestamp] pairs
+        # The recorded [message,timestamp] pairs.
+        #
+        # Timestamps are in floating point seconds.
         attr_reader :messages_with_timestamps
 
         # The recorded messages without timestamps
@@ -50,7 +52,7 @@ module JSound
         end
 
         def message(message)
-          @messages_with_timestamps << [message, Time.now.to_i] if recording?
+          @messages_with_timestamps << [message, Time.now.to_f] if recording?
         end
 
       end

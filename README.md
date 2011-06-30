@@ -21,7 +21,7 @@ License:  Distributed under a permissive BSD-style license, see LICENSE.txt
 Documentation
 -------------
 
-Gem: http://rubydoc.info/gems/jsound/0.1.2/frames
+Gem: http://rubydoc.info/gems/jsound/0.1.3/frames
 
 Latest for source: http://rubydoc.info/github/adamjmurray/jsound/master/frames
 
@@ -32,11 +32,15 @@ Development Notes
 
 ### Run Tests ###
 
-     rake spec
+Test with current version of JRuby:
 
-and to quickly check compatibility with multiple JRuby versions via rvm:
+     jruby -S rake spec
 
-     rvm jruby-1.5.6,jruby-1.6.2 rake spec:fast
+Test with all supported versions of JRuby (requires [rvm](https://rvm.beginrescueend.com/), JRuby 1.5.6, and JRuby 1.6.2):
+
+     rake spec:xversion
+
+spec:xversion must pass for a pull request to be accepted or for a release of the jsound gem.
 
 
 ### Generate Docs ###
@@ -57,6 +61,9 @@ https://www.pivotaltracker.com/projects/85719
 
 Changelog
 ---------
+
+* June 29, 2011, version 0.1.3
+    - enhanced JSound::Devices::Recorder to record floating point seconds, instead integer seconds (which wasn't particularly useful)
 
 * June 18, 2011, version 0.1.2
     - added a "Hash of mappings" feature to Transformer, for easy implementation of simple transformation patterns
